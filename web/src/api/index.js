@@ -23,9 +23,7 @@ export default {
   getRoleAuthorized: (params = {}) => request.get('/role/authorized', { params }),
   // menus
   getMenus: (params = {}) => request.get('/menu/list', { params }),
-  createMenu: (data = {}) => request.post('/menu/create', data),
   updateMenu: (data = {}) => request.post('/menu/update', data),
-  deleteMenu: (params = {}) => request.delete('/menu/delete', { params }),
   // depts
   getDepts: (params = {}) => request.get('/dept/list', { params }),
   createDept: (data = {}) => request.post('/dept/create', data),

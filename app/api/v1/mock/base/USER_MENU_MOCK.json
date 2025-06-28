@@ -48,22 +48,6 @@
                 "component": "/system/role"
             },
             {
-                "name": "菜单管理",
-                "path": "menu",
-                "keepalive": false,
-                "icon": "material-symbols:list-alt-outline",
-                "updated_at": "2025-06-27 23:12:19",
-                "remark": null,
-                "menu_type": "menu",
-                "created_at": "2025-06-27 23:12:19",
-                "is_hidden": false,
-                "redirect": null,
-                "order": 3,
-                "parent_id": 1,
-                "id": 4,
-                "component": "/system/menu"
-            },
-            {
                 "name": "部门管理",
                 "path": "dept",
                 "keepalive": false,

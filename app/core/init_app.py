@@ -117,17 +117,6 @@ async def init_menus():
             ),
             Menu(
                 menu_type=MenuType.MENU,
-                name="菜单管理",
-                path="menu",
-                order=3,
-                parent_id=parent_menu.id,
-                icon="material-symbols:list-alt-outline",
-                is_hidden=False,
-                component="/system/menu",
-                keepalive=False,
-            ),
-            Menu(
-                menu_type=MenuType.MENU,
                 name="API管理",
                 path="api",
                 order=4,
