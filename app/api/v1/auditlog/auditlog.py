@@ -2,44 +2,50 @@ from datetime import datetime
 from fastapi import APIRouter, Query
 from tortoise.expressions import Q
 
+import os
+import json
 from app.models.admin import AuditLog
 from app.schemas import SuccessExtra
 from app.schemas.apis import *
 
 router = APIRouter()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-@router.get("/list", summary="查看操作日志")
+@router.get("/list", summary="audit api requests")
 async def get_audit_log_list(
-    page: int = Query(1, description="页码"),
-    page_size: int = Query(10, description="每页数量"),
-    username: str = Query("", description="操作人名称"),
-    module: str = Query("", description="功能模块"),
-    method: str = Query("", description="请求方法"),
-    summary: str = Query("", description="接口描述"),
-    status: int = Query(None, description="状态码"),
-    start_time: datetime = Query("", description="开始时间"),
-    end_time: datetime = Query("", description="结束时间"),
+    page: int = Query(1, description="page number"),
+    page_size: int = Query(10, description="log per page"),
+    username: str = Query("", description="visitor"),
+    module: str = Query("", description="module"),
+    method: str = Query("", description="request method"),
+    summary: str = Query("", description="api summary"),
+    status: int = Query(None, description="status code"),
+    start_time: datetime = Query("", description="start time"),
+    end_time: datetime = Query("", description="end time"),
 ):
+    
+    mock_path = os.path.join(BASE_DIR, "../mock/auditlog", "AUDIT_LOG_MOCK.json")
+    with open(mock_path, encoding="utf-8") as f:
+        data = json.load(f)
     q = Q()
     if username:
-        q &= Q(username__icontains=username)
+        data = [item for item in data if username in item["username"]]
     if module:
-        q &= Q(module__icontains=module)
+        data = [item for item in data if module in item["module"]]
     if method:
-        q &= Q(method__icontains=method)
+        data = [item for item in data if method == item["method"]]
     if summary:
-        q &= Q(summary__icontains=summary)
+        data = [item for item in data if summary in item["summary"]]
     if status:
-        q &= Q(status=status)
+        data = [item for item in data if status == item["status"]]
     if start_time and end_time:
-        q &= Q(created_at__range=[start_time, end_time])
+        data = [item for item in data if datetime.strptime(item["created_at"], "%Y-%m-%d %H:%M:%S") > start_time and datetime.strptime(item["created_at"], "%Y-%m-%d %H:%M:%S") < end_time]
     elif start_time:
-        q &= Q(created_at__gte=start_time)
+        data = [item for item in data if datetime.strptime(item["created_at"], "%Y-%m-%d %H:%M:%S") > start_time]
     elif end_time:
-        q &= Q(created_at__lte=end_time)
+        data = [item for item in data if datetime.strptime(item["created_at"], "%Y-%m-%d %H:%M:%S") < end_time]
 
-    audit_log_objs = await AuditLog.filter(q).offset((page - 1) * page_size).limit(page_size).order_by("-created_at")
-    total = await AuditLog.filter(q).count()
-    data = [await audit_log.to_dict() for audit_log in audit_log_objs]
+    total = len(data)
+
     return SuccessExtra(data=data, total=total, page=page, page_size=page_size)
