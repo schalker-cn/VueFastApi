@@ -57,8 +57,6 @@ const menuOption = ref([]) // 菜单选项
 const active = ref(false)
 const menu_ids = ref([])
 const role_id = ref(0)
-const apiOption = ref([])
-const api_ids = ref([])
 const apiTree = ref([])
 
 function buildApiTree(data) {
@@ -178,19 +176,14 @@ const columns = [
               onClick: async () => {
                 try {
                   // 使用 Promise.all 来同时发送所有请求
-                  const [menusResponse, apisResponse, roleAuthorizedResponse] = await Promise.all([
+                  const [menusResponse, roleAuthorizedResponse] = await Promise.all([
                     api.getMenus({ page: 1, page_size: 9999 }),
-                    api.getApis({ page: 1, page_size: 9999 }),
                     api.getRoleAuthorized({ id: row.id }),
                   ])
 
                   // 处理每个请求的响应
                   menuOption.value = menusResponse.data
-                  apiOption.value = buildApiTree(apisResponse.data)
                   menu_ids.value = roleAuthorizedResponse.data.menus.map((v) => v.id)
-                  api_ids.value = roleAuthorizedResponse.data.apis.map(
-                    (v) => v.method.toLowerCase() + v.path
-                  )
 
                   active.value = true
                   role_id.value = row.id
@@ -212,34 +205,6 @@ const columns = [
   },
 ]
 
-async function updateRoleAuthorized() {
-  const checkData = apiTree.value.getCheckedData()
-  const apiInfos = []
-  checkData &&
-    checkData.options.forEach((item) => {
-      if (!item.children) {
-        apiInfos.push({
-          path: item.path,
-          method: item.method,
-        })
-      }
-    })
-  const { code, msg } = await api.updateRoleAuthorized({
-    id: role_id.value,
-    menu_ids: menu_ids.value,
-    api_infos: apiInfos,
-  })
-  if (code === 200) {
-    $message?.success('设置成功')
-  } else {
-    $message?.error(msg)
-  }
-
-  const result = await api.getRoleAuthorized({ id: role_id.value })
-  menu_ids.value = result.data.menus.map((v) => {
-    return v.id
-  })
-}
 </script>
 
 <template>
@@ -302,24 +267,6 @@ async function updateRoleAuthorized() {
 
     <NDrawer v-model:show="active" placement="right" :width="500"
       ><NDrawerContent>
-        <NGrid x-gap="24" cols="12">
-          <NGi span="8">
-            <NInput
-              v-model:value="pattern"
-              type="text"
-              placeholder="筛选"
-              style="flex-grow: 1"
-            ></NInput>
-          </NGi>
-          <NGi offset="2">
-            <NButton
-              v-permission="'post/api/v1/role/authorized'"
-              type="info"
-              @click="updateRoleAuthorized"
-              >确定</NButton
-            >
-          </NGi>
-        </NGrid>
         <NTabs>
           <NTabPane name="menu" tab="菜单权限" display-directive="show">
             <!-- TODO：级联 -->
@@ -335,23 +282,6 @@ async function updateRoleAuthorized() {
               :block-line="true"
               :selectable="false"
               @update:checked-keys="(v) => (menu_ids = v)"
-            />
-          </NTabPane>
-          <NTabPane name="resource" tab="接口权限" display-directive="show">
-            <NTree
-              ref="apiTree"
-              :data="apiOption"
-              :checked-keys="api_ids"
-              :pattern="pattern"
-              :show-irrelevant-nodes="false"
-              key-field="unique_id"
-              label-field="summary"
-              checkable
-              :default-expand-all="true"
-              :block-line="true"
-              :selectable="false"
-              cascade
-              @update:checked-keys="(v) => (api_ids = v)"
             />
           </NTabPane>
         </NTabs>

@@ -26,12 +26,6 @@ export default {
   createMenu: (data = {}) => request.post('/menu/create', data),
   updateMenu: (data = {}) => request.post('/menu/update', data),
   deleteMenu: (params = {}) => request.delete('/menu/delete', { params }),
-  // apis
-  getApis: (params = {}) => request.get('/api/list', { params }),
-  createApi: (data = {}) => request.post('/api/create', data),
-  updateApi: (data = {}) => request.post('/api/update', data),
-  deleteApi: (params = {}) => request.delete('/api/delete', { params }),
-  refreshApi: (data = {}) => request.post('/api/refresh', data),
   // depts
   getDepts: (params = {}) => request.get('/dept/list', { params }),
   createDept: (data = {}) => request.post('/dept/create', data),
