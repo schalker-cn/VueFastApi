@@ -4,7 +4,7 @@
       <n-card rounded-10>
         <div flex items-center justify-between>
           <div flex items-center>
-            <img rounded-full width="60" :src="userStore.avatar" />
+            <img rounded-full width="60" :src="placeholder" />
             <div ml-10>
               <p text-20 font-semibold>
                 {{ $t('views.workbench.text_hello', { username: userStore.name }) }}
@@ -48,6 +48,7 @@
 <script setup>
 import { useUserStore } from '@/store'
 import { useI18n } from 'vue-i18n'
+import placeholder from '@/assets/images/placeholder.jpg'
 
 const dummyText = '一个基于 Vue3.0、FastAPI、Naive UI 的轻量级后台管理模板'
 const { t } = useI18n({ useScope: 'global' })
