@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter
+import json
+import os
 
 from app.controllers.user import user_controller
 from app.core.ctx import CTX_USER_ID
@@ -8,7 +10,6 @@ from app.core.dependency import DependAuth
 from app.models.admin import Api, Menu, Role, User
 from app.schemas.base import Fail, Success
 from app.schemas.login import *
-from app.schemas.users import UpdatePassword
 from app.settings import settings
 from app.utils.jwt_utils import create_access_token
 from app.utils.password import get_password_hash, verify_password
@@ -48,30 +49,12 @@ async def get_userinfo():
 
 @router.get("/usermenu", summary="查看用户菜单")
 async def get_user_menu():
-    user_id = CTX_USER_ID.get()
-    user_obj = await User.filter(id=user_id).first()
-    menus: list[Menu] = []
-    if user_obj.is_superuser:
-        menus = await Menu.all()
-    else:
-        role_objs: list[Role] = await user_obj.roles
-        for role_obj in role_objs:
-            menu = await role_obj.menus
-            menus.extend(menu)
-        menus = list(set(menus))
-    parent_menus: list[Menu] = []
-    for menu in menus:
-        if menu.parent_id == 0:
-            parent_menus.append(menu)
-    res = []
-    for parent_menu in parent_menus:
-        parent_menu_dict = await parent_menu.to_dict()
-        parent_menu_dict["children"] = []
-        for menu in menus:
-            if menu.parent_id == parent_menu.id:
-                parent_menu_dict["children"].append(await menu.to_dict())
-        res.append(parent_menu_dict)
-    return Success(data=res)
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # 当前文件所在目录的绝对路径
+    mock_path = os.path.join(BASE_DIR, "../mock", "USER_MENU_MOCK.json")  # mock文件路径
+
+    with open(mock_path, encoding="utf-8") as f:
+        data = json.load(f)
+    return Success(data=data)
 
 
 @router.get("/userapi", summary="查看用户API", dependencies=[DependAuth])
@@ -90,14 +73,3 @@ async def get_user_api():
     apis = list(set(apis))
     return Success(data=apis)
 
-
-@router.post("/update_password", summary="修改密码", dependencies=[DependAuth])
-async def update_user_password(req_in: UpdatePassword):
-    user_id = CTX_USER_ID.get()
-    user = await user_controller.get(user_id)
-    verified = verify_password(req_in.old_password, user.password)
-    if not verified:
-        return Fail(msg="旧密码验证错误！")
-    user.password = get_password_hash(req_in.new_password)
-    await user.save()
-    return Success(msg="修改成功")

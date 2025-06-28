@@ -38,7 +38,3 @@ class UserUpdate(BaseModel):
     role_ids: Optional[List[int]] = []
     dept_id: Optional[int] = 0
 
-
-class UpdatePassword(BaseModel):
-    old_password: str = Field(description="旧密码")
-    new_password: str = Field(description="新密码")
