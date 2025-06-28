@@ -1,7 +1,7 @@
 import { request } from '@/utils'
 
 export default {
-  login: (data) => request.post('/base/access_token', data, { noNeedToken: true }),
+  login: () => request.post('/base/access_token', { noNeedToken: true }),
   getUserInfo: () => request.get('/base/userinfo'),
   getUserMenu: () => request.get('/base/usermenu'),
   getUserApi: () => request.get('/base/userapi'),
