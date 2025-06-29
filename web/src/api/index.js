@@ -19,7 +19,6 @@ export default {
   createRole: (data = {}) => request.post('/role/create', data),
   updateRole: (data = {}) => request.post('/role/update', data),
   deleteRole: (params = {}) => request.delete('/role/delete', { params }),
-  updateRoleAuthorized: (data = {}) => request.post('/role/authorized', data),
   getRoleAuthorized: (params = {}) => request.get('/role/authorized', { params }),
   // menus
   getMenus: (params = {}) => request.get('/menu/list', { params }),

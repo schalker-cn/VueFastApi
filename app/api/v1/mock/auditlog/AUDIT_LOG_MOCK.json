@@ -856,7 +856,6 @@
                 "delete/api/v1/user/delete",
                 "post/api/v1/user/reset_password",
                 "get/api/v1/role/list",
-                "get/api/v1/role/get",
                 "post/api/v1/role/create",
                 "post/api/v1/role/update",
                 "delete/api/v1/role/delete",
