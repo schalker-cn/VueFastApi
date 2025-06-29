@@ -52,7 +52,7 @@ class UserController(CRUDBase[User, UserCreate, UserUpdate]):
     async def reset_password(self, user_id: int):
         user_obj = await self.get(id=user_id)
         if user_obj.is_superuser:
-            raise HTTPException(status_code=403, detail="不允许重置超级管理员密码")
+            raise HTTPException(status_code=403, detail="Resetting password for superuser is not allowed")
         user_obj.password = get_password_hash(password="123456")
         await user_obj.save()
 

@@ -30,7 +30,7 @@ import api from '@/api'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import { useUserStore } from '@/store'
 
-defineOptions({ name: '用户管理' })
+defineOptions({ name: 'User Management' })
 
 const $table = ref(null)
 const queryItems = ref({})
@@ -48,7 +48,7 @@ const {
   handleDelete,
   handleAdd,
 } = useCRUD({
-  name: '用户',
+  name: 'user',
   initForm: {},
   doCreate: api.createUser,
   doUpdate: api.updateUser,
@@ -67,21 +67,21 @@ onMounted(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: 'username',
     key: 'username',
     width: 60,
     align: 'center',
     ellipsis: { tooltip: true },
   },
   {
-    title: '邮箱',
+    title: 'email',
     key: 'email',
     width: 60,
     align: 'center',
     ellipsis: { tooltip: true },
   },
   {
-    title: '用户角色',
+    title: 'role',
     key: 'role',
     width: 60,
     align: 'center',
@@ -96,14 +96,14 @@ const columns = [
     },
   },
   {
-    title: '部门',
+    title: 'department',
     key: 'dept.name',
     align: 'center',
     width: 40,
     ellipsis: { tooltip: true },
   },
   {
-    title: '超级用户',
+    title: 'is superuser',
     key: 'is_superuser',
     align: 'center',
     width: 40,
@@ -111,12 +111,12 @@ const columns = [
       return h(
         NTag,
         { type: 'info', style: { margin: '2px 3px' } },
-        { default: () => (row.is_superuser ? '是' : '否') }
+        { default: () => (row.is_superuser ? 'YES' : 'NO') }
       )
     },
   },
   {
-    title: '上次登录时间',
+    title: 'last login',
     key: 'last_login',
     align: 'center',
     width: 80,
@@ -133,7 +133,7 @@ const columns = [
     },
   },
   {
-    title: '禁用',
+    title: 'banned',
     key: 'is_active',
     width: 50,
     align: 'center',
@@ -150,7 +150,7 @@ const columns = [
     },
   },
   {
-    title: '操作',
+    title: 'actions',
     key: 'actions',
     width: 80,
     align: 'center',
@@ -172,7 +172,7 @@ const columns = [
               },
             },
             {
-              default: () => '编辑',
+              default: () => 'edit',
               icon: renderIcon('material-symbols:edit', { size: 16 }),
             }
           ),
@@ -195,13 +195,13 @@ const columns = [
                     style: 'margin-right: 8px;',
                   },
                   {
-                    default: () => '删除',
+                    default: () => 'delete',
                     icon: renderIcon('material-symbols:delete-outline', { size: 16 }),
                   }
                 ),
                 [[vPermission, 'delete/api/v1/user/delete']]
               ),
-            default: () => h('div', {}, '确定删除该用户吗?'),
+            default: () => h('div', {}, 'are you sure to delete this user?'),
           }
         ),
       ]
@@ -214,7 +214,7 @@ async function handleUpdateDisable(row) {
   if (!row.id) return
   const userStore = useUserStore()
   if (userStore.userId === row.id) {
-    $message.error('当前登录用户不可禁用！')
+    $message.error('current user cannot be banned')
     return
   }
   row.publishing = true
@@ -228,10 +228,9 @@ async function handleUpdateDisable(row) {
   row.dept_id = row.dept?.id
   try {
     await api.updateUser(row)
-    $message?.success(row.is_active ? '已取消禁用该用户' : '已禁用该用户')
+    $message?.success(row.is_active ? 'ban discarded' : 'ban successful')
     $table.value?.handleSearch()
   } catch (err) {
-    // 有异常恢复原来的状态
     row.is_active = row.is_active === false ? true : false
   } finally {
     row.publishing = false
@@ -260,14 +259,14 @@ const validateAddUser = {
   username: [
     {
       required: true,
-      message: '请输入名称',
+      message: 'user nmae',
       trigger: ['input', 'blur'],
     },
   ],
   email: [
     {
       required: true,
-      message: '请输入邮箱地址',
+      message: 'email address',
       trigger: ['input', 'change'],
     },
     {
@@ -275,7 +274,7 @@ const validateAddUser = {
       validator: (rule, value, callback) => {
         const re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
         if (!re.test(modalForm.value.email)) {
-          callback('邮箱格式错误')
+          callback('email format is incorrect')
           return
         }
         callback()
@@ -285,21 +284,21 @@ const validateAddUser = {
   password: [
     {
       required: true,
-      message: '请输入密码',
+      message: 'create password',
       trigger: ['input', 'blur', 'change'],
     },
   ],
   confirmPassword: [
     {
       required: true,
-      message: '请再次输入密码',
+      message: 'confirm password',
       trigger: ['input'],
     },
     {
       trigger: ['blur'],
       validator: (rule, value, callback) => {
         if (value !== modalForm.value.password) {
-          callback('两次密码输入不一致')
+          callback('the given password does not match')
           return
         }
         callback()
@@ -310,7 +309,7 @@ const validateAddUser = {
     {
       type: 'array',
       required: true,
-      message: '请至少选择一个角色',
+      message: 'please select at least one role',
       trigger: ['blur', 'change'],
     },
   ],
@@ -326,7 +325,7 @@ const validateAddUser = {
       :width="240"
       show-trigger="arrow-circle"
     >
-      <h1>部门列表</h1>
+      <h1>Department List</h1>
       <br />
       <NTree
         block-line
@@ -339,10 +338,10 @@ const validateAddUser = {
       </NTree>
     </NLayoutSider>
     <NLayoutContent>
-      <CommonPage show-footer title="用户列表">
+      <CommonPage show-footer title="User List">
         <template #action>
           <NButton v-permission="'post/api/v1/user/create'" type="primary" @click="handleAdd">
-            <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />新建用户
+            <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />Create User
           </NButton>
         </template>
         <!-- 表格 -->
@@ -353,28 +352,27 @@ const validateAddUser = {
           :get-data="api.getUserList"
         >
           <template #queryBar>
-            <QueryBarItem label="名称" :label-width="40">
+            <QueryBarItem label="username" :label-width="40">
               <NInput
                 v-model:value="queryItems.username"
                 clearable
                 type="text"
-                placeholder="请输入用户名称"
+                placeholder="type username here"
                 @keypress.enter="$table?.handleSearch()"
               />
             </QueryBarItem>
-            <QueryBarItem label="邮箱" :label-width="40">
+            <QueryBarItem label="email" :label-width="40">
               <NInput
                 v-model:value="queryItems.email"
                 clearable
                 type="text"
-                placeholder="请输入邮箱"
+                placeholder="type email here"
                 @keypress.enter="$table?.handleSearch()"
               />
             </QueryBarItem>
           </template>
         </CrudTable>
 
-        <!-- 新增/编辑 弹窗 -->
         <CrudModal
           v-model:visible="modalVisible"
           :title="modalTitle"
@@ -389,31 +387,31 @@ const validateAddUser = {
             :model="modalForm"
             :rules="validateAddUser"
           >
-            <NFormItem label="用户名称" path="username">
-              <NInput v-model:value="modalForm.username" clearable placeholder="请输入用户名称" />
+            <NFormItem label="user name" path="username">
+              <NInput v-model:value="modalForm.username" clearable placeholder="type username here" />
             </NFormItem>
-            <NFormItem label="邮箱" path="email">
-              <NInput v-model:value="modalForm.email" clearable placeholder="请输入邮箱" />
+            <NFormItem label="email" path="email">
+              <NInput v-model:value="modalForm.email" clearable placeholder="type email here" />
             </NFormItem>
-            <NFormItem v-if="modalAction === 'add'" label="密码" path="password">
+            <NFormItem v-if="modalAction === 'add'" label="password" path="password">
               <NInput
                 v-model:value="modalForm.password"
                 show-password-on="mousedown"
                 type="password"
                 clearable
-                placeholder="请输入密码"
+                placeholder="please set password"
               />
             </NFormItem>
-            <NFormItem v-if="modalAction === 'add'" label="确认密码" path="confirmPassword">
+            <NFormItem v-if="modalAction === 'add'" label="confirm password" path="confirmPassword">
               <NInput
                 v-model:value="modalForm.confirmPassword"
                 show-password-on="mousedown"
                 type="password"
                 clearable
-                placeholder="请确认密码"
+                placeholder="please confirm password"
               />
             </NFormItem>
-            <NFormItem label="角色" path="role_ids">
+            <NFormItem label="role" path="role_ids">
               <NCheckboxGroup v-model:value="modalForm.role_ids">
                 <NSpace item-style="display: flex;">
                   <NCheckbox
@@ -425,7 +423,7 @@ const validateAddUser = {
                 </NSpace>
               </NCheckboxGroup>
             </NFormItem>
-            <NFormItem label="超级用户" path="is_superuser">
+            <NFormItem label="is superuser" path="is_superuser">
               <NSwitch
                 v-model:value="modalForm.is_superuser"
                 size="small"
@@ -433,7 +431,7 @@ const validateAddUser = {
                 :unchecked-value="false"
               ></NSwitch>
             </NFormItem>
-            <NFormItem label="禁用" path="is_active">
+            <NFormItem label="banned" path="is_active">
               <NSwitch
                 v-model:value="modalForm.is_active"
                 :checked-value="false"
@@ -441,13 +439,13 @@ const validateAddUser = {
                 :default-value="true"
               />
             </NFormItem>
-            <NFormItem label="部门" path="dept_id">
+            <NFormItem label="department" path="dept_id">
               <NTreeSelect
                 v-model:value="modalForm.dept_id"
                 :options="deptOption"
                 key-field="id"
                 label-field="name"
-                placeholder="请选择部门"
+                placeholder="please select department"
                 clearable
                 default-expand-all
               ></NTreeSelect>
@@ -457,5 +455,4 @@ const validateAddUser = {
       </CommonPage>
     </NLayoutContent>
   </NLayout>
-  <!-- 业务页面 -->
 </template>

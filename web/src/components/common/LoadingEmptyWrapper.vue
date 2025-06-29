@@ -30,14 +30,14 @@ import { ref, computed, nextTick, watch, onUnmounted } from 'vue'
 
 defineOptions({ name: 'LoadingEmptyWrapper' })
 
-const NETWORK_ERROR_MSG = '网络似乎开了小差~'
+const NETWORK_ERROR_MSG = 'network error'
 
 const props = {
   loading: false,
   empty: false,
   loadingSize: 'medium',
   placeholderClass: 'bg-white dark:bg-dark transition-background-color duration-300 ease-in-out',
-  emptyDesc: '暂无数据',
+  emptyDesc: 'no data',
   iconClass: 'text-320px text-primary',
   descClass: 'text-16px text-#666',
   showNetworkReload: false,

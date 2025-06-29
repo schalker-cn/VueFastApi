@@ -12,8 +12,6 @@ import {
   NDrawerContent,
   NTabs,
   NTabPane,
-  NGrid,
-  NGi,
 } from 'naive-ui'
 
 import CommonPage from '@/components/page/CommonPage.vue'
@@ -26,7 +24,7 @@ import { useCRUD } from '@/composables'
 import api from '@/api'
 import TheIcon from '@/components/icon/TheIcon.vue'
 
-defineOptions({ name: '角色管理' })
+defineOptions({ name: 'Role Management' })
 
 const $table = ref(null)
 const queryItems = ref({})
@@ -44,7 +42,7 @@ const {
   modalForm,
   modalFormRef,
 } = useCRUD({
-  name: '角色',
+  name: 'role',
   initForm: {},
   doCreate: api.createRole,
   doDelete: api.deleteRole,
@@ -53,37 +51,11 @@ const {
 })
 
 const pattern = ref('')
-const menuOption = ref([]) // 菜单选项
+const menuOption = ref([])
 const active = ref(false)
 const menu_ids = ref([])
 const role_id = ref(0)
 const apiTree = ref([])
-
-function buildApiTree(data) {
-  const processedData = []
-  const groupedData = {}
-
-  data.forEach((item) => {
-    const tags = item['tags']
-    const pathParts = item['path'].split('/')
-    const path = pathParts.slice(0, -1).join('/')
-    const summary = tags.charAt(0).toUpperCase() + tags.slice(1)
-    const unique_id = item['method'].toLowerCase() + item['path']
-    if (!(path in groupedData)) {
-      groupedData[path] = { unique_id: path, path: path, summary: summary, children: [] }
-    }
-
-    groupedData[path].children.push({
-      id: item['id'],
-      path: item['path'],
-      method: item['method'],
-      summary: item['summary'],
-      unique_id: unique_id,
-    })
-  })
-  processedData.push(...Object.values(groupedData))
-  return processedData
-}
 
 onMounted(() => {
   $table.value?.handleSearch()
@@ -91,7 +63,7 @@ onMounted(() => {
 
 const columns = [
   {
-    title: '角色名',
+    title: 'role name',
     key: 'name',
     width: 80,
     align: 'center',
@@ -101,13 +73,13 @@ const columns = [
     },
   },
   {
-    title: '角色描述',
+    title: 'role detail',
     key: 'desc',
     width: 80,
     align: 'center',
   },
   {
-    title: '创建日期',
+    title: 'created at',
     key: 'created_at',
     width: 60,
     align: 'center',
@@ -116,7 +88,7 @@ const columns = [
     },
   },
   {
-    title: '操作',
+    title: 'actions',
     key: 'actions',
     width: 80,
     align: 'center',
@@ -135,7 +107,7 @@ const columns = [
               },
             },
             {
-              default: () => '编辑',
+              default: () => 'edit',
               icon: renderIcon('material-symbols:edit-outline', { size: 16 }),
             }
           ),
@@ -158,13 +130,13 @@ const columns = [
                     style: 'margin-right: 8px;',
                   },
                   {
-                    default: () => '删除',
+                    default: () => 'delete',
                     icon: renderIcon('material-symbols:delete-outline', { size: 16 }),
                   }
                 ),
                 [[vPermission, 'delete/api/v1/role/delete']]
               ),
-            default: () => h('div', {}, '确定删除该角色吗?'),
+            default: () => h('div', {}, 'are you sure to delete this role?'),
           }
         ),
         withDirectives(
@@ -175,26 +147,24 @@ const columns = [
               type: 'primary',
               onClick: async () => {
                 try {
-                  // 使用 Promise.all 来同时发送所有请求
+                  // use Promise.all to fetch all requests
                   const [menusResponse, roleAuthorizedResponse] = await Promise.all([
                     api.getMenus({ page: 1, page_size: 9999 }),
                     api.getRoleAuthorized({ id: row.id }),
                   ])
 
-                  // 处理每个请求的响应
                   menuOption.value = menusResponse.data
                   menu_ids.value = roleAuthorizedResponse.data.menus.map((v) => v.id)
 
                   active.value = true
                   role_id.value = row.id
                 } catch (error) {
-                  // 错误处理
                   console.error('Error loading data:', error)
                 }
               },
             },
             {
-              default: () => '设置权限',
+              default: () => 'set access',
               icon: renderIcon('material-symbols:edit-outline', { size: 16 }),
             }
           ),
@@ -208,10 +178,10 @@ const columns = [
 </script>
 
 <template>
-  <CommonPage show-footer title="角色列表">
+  <CommonPage show-footer title="Role List">
     <template #action>
       <NButton v-permission="'post/api/v1/role/create'" type="primary" @click="handleAdd">
-        <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />新建角色
+        <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />Create Role
       </NButton>
     </template>
 
@@ -222,12 +192,12 @@ const columns = [
       :get-data="api.getRoleList"
     >
       <template #queryBar>
-        <QueryBarItem label="角色名" :label-width="50">
+        <QueryBarItem label="role name" :label-width="50">
           <NInput
             v-model:value="queryItems.role_name"
             clearable
             type="text"
-            placeholder="请输入角色名"
+            placeholder="please input role name"
             @keypress.enter="$table?.handleSearch()"
           />
         </QueryBarItem>
@@ -249,18 +219,18 @@ const columns = [
         :disabled="modalAction === 'view'"
       >
         <NFormItem
-          label="角色名"
+          label="role name"
           path="name"
           :rule="{
             required: true,
-            message: '请输入角色名称',
+            message: 'please input role name',
             trigger: ['input', 'blur'],
           }"
         >
-          <NInput v-model:value="modalForm.name" placeholder="请输入角色名称" />
+          <NInput v-model:value="modalForm.name" placeholder="please input role name" />
         </NFormItem>
-        <NFormItem label="角色描述" path="desc">
-          <NInput v-model:value="modalForm.desc" placeholder="请输入角色描述" />
+        <NFormItem label="role description" path="desc">
+          <NInput v-model:value="modalForm.desc" placeholder="please input role description" />
         </NFormItem>
       </NForm>
     </CrudModal>
@@ -268,8 +238,7 @@ const columns = [
     <NDrawer v-model:show="active" placement="right" :width="500"
       ><NDrawerContent>
         <NTabs>
-          <NTabPane name="menu" tab="菜单权限" display-directive="show">
-            <!-- TODO：级联 -->
+          <NTabPane name="menu" tab="menu access" display-directive="show">
             <NTree
               :data="menuOption"
               :checked-keys="menu_ids"
@@ -285,7 +254,7 @@ const columns = [
             />
           </NTabPane>
         </NTabs>
-        <template #header> 设置权限 </template>
+        <template #header> set access </template>
       </NDrawerContent>
     </NDrawer>
   </CommonPage>

@@ -82,7 +82,7 @@ const pagination = reactive({
   pageSizes: [10, 20, 50, 100],
   showSizePicker: true,
   prefix({ itemCount }) {
-    return `共 ${itemCount} 条`
+    return ` ${itemCount} items in total`
   },
   onChange: (page) => {
     pagination.page = page
@@ -108,7 +108,7 @@ async function handleQuery() {
       ...paginationParams,
     })
     tableData.value = data
-    pagination.itemCount = total || 0
+    pagination.itemCount = total || 5
   } catch (error) {
     tableData.value = []
     pagination.itemCount = 0

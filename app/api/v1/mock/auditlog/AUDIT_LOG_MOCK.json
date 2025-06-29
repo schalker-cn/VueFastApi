@@ -22,8 +22,8 @@
                     "path": "/api/v1/auditlog/list",
                     "response_time": 4,
                     "created_at": "2025-06-28 18:43:53",
-                    "module": "审计日志模块",
-                    "summary": "查看操作日志",
+                    "module": "audit log",
+                    "summary": "fetch audit log",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:53"
                 },
@@ -42,8 +42,8 @@
                     "path": "/api/v1/auditlog/list",
                     "response_time": 14,
                     "created_at": "2025-06-28 18:43:49",
-                    "module": "审计日志模块",
-                    "summary": "查看操作日志",
+                    "module": "audit log",
+                    "summary": "fetch audit log",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:49"
                 },
@@ -61,8 +61,8 @@
                     "path": "/api/v1/auditlog/list",
                     "response_time": 7,
                     "created_at": "2025-06-28 18:43:44",
-                    "module": "审计日志模块",
-                    "summary": "查看操作日志",
+                    "module": "audit log",
+                    "summary": "fetch audit log",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:44"
                 },
@@ -78,8 +78,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 3,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
                 },
@@ -92,7 +92,7 @@
                     "path": "/api/v1/base/userapi",
                     "response_time": 0,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user API",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -106,7 +106,7 @@
                     "path": "/api/v1/base/usermenu",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user menu",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -120,7 +120,7 @@
                     "path": "/api/v1/base/userinfo",
                     "response_time": 2,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user data",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -133,7 +133,7 @@
         "created_at": "2025-06-28 18:46:34",
         "response_time": 7,
         "updated_at": "2025-06-28 18:46:34",
-        "module": "审计日志模块",
+        "module": "audit log",
         "request_args": {
             "start_time": "2025-06-28 00:00:00",
             "end_time": "2025-06-28 23:59:59",
@@ -146,7 +146,7 @@
         "id": 288
     },
     {
-        "summary": "查看部门列表",
+        "summary": "fetch dept list",
         "path": "/api/v1/dept/list",
         "method": "GET",
         "response_body": {
@@ -157,7 +157,7 @@
         "created_at": "2025-06-28 18:43:59",
         "response_time": 2,
         "updated_at": "2025-06-28 18:43:59",
-        "module": "部门模块",
+        "module": "department",
         "request_args": {},
         "status": 200,
         "username": "",
@@ -165,7 +165,7 @@
         "id": 287
     },
     {
-        "summary": "查看角色列表",
+        "summary": "fetch role list",
         "path": "/api/v1/role/list",
         "method": "GET",
         "response_body": {
@@ -194,7 +194,7 @@
         "created_at": "2025-06-28 18:43:57",
         "response_time": 3,
         "updated_at": "2025-06-28 18:43:57",
-        "module": "角色模块",
+        "module": "role",
         "request_args": {
             "page": "1",
             "page_size": "9999"
@@ -205,7 +205,7 @@
         "id": 286
     },
     {
-        "summary": "查看用户列表",
+        "summary": "fetch user list",
         "path": "/api/v1/user/list",
         "method": "GET",
         "response_body": {
@@ -234,7 +234,7 @@
         "created_at": "2025-06-28 18:43:57",
         "response_time": 7,
         "updated_at": "2025-06-28 18:43:57",
-        "module": "用户模块",
+        "module": "user",
         "request_args": {
             "page": "1",
             "page_size": "10"
@@ -245,7 +245,7 @@
         "id": 285
     },
     {
-        "summary": "查看操作日志",
+        "summary": "fetch audit log",
         "path": "/api/v1/auditlog/list",
         "method": "GET",
         "response_body": {
@@ -267,7 +267,7 @@
                     "path": "/api/v1/role/update",
                     "response_time": 8,
                     "created_at": "2025-06-28 18:41:58",
-                    "module": "角色模块",
+                    "module": "role",
                     "summary": "更新角色",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:41:58"
@@ -358,7 +358,7 @@
                     "path": "/api/v1/base/access_token",
                     "response_time": 0,
                     "created_at": "2025-06-28 17:32:07",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch token",
                     "user_id": 0,
                     "updated_at": "2025-06-28 17:32:07"
@@ -374,7 +374,7 @@
                     "path": "/api/v1/base/access_token",
                     "response_time": 0,
                     "created_at": "2025-06-28 17:27:11",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch token",
                     "user_id": 0,
                     "updated_at": "2025-06-28 17:27:11"
@@ -390,7 +390,7 @@
                     "path": "/api/v1/base/access_token",
                     "response_time": 2,
                     "created_at": "2025-06-28 17:26:52",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch token",
                     "user_id": 0,
                     "updated_at": "2025-06-28 17:26:52"
@@ -406,7 +406,7 @@
                     "path": "/api/v1/base/access_token",
                     "response_time": 0,
                     "created_at": "2025-06-28 17:25:58",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch token",
                     "user_id": 0,
                     "updated_at": "2025-06-28 17:25:58"
@@ -419,7 +419,7 @@
         "created_at": "2025-06-28 18:43:53",
         "response_time": 4,
         "updated_at": "2025-06-28 18:43:53",
-        "module": "审计日志模块",
+        "module": "audit log",
         "request_args": {
             "start_time": "2025-06-28 00:00:00",
             "end_time": "2025-06-28 23:59:59",
@@ -433,7 +433,7 @@
         "id": 284
     },
     {
-        "summary": "查看操作日志",
+        "summary": "fetch audit log",
         "path": "/api/v1/auditlog/list",
         "method": "GET",
         "response_body": {
@@ -454,8 +454,8 @@
                     "path": "/api/v1/auditlog/list",
                     "response_time": 7,
                     "created_at": "2025-06-28 18:43:44",
-                    "module": "审计日志模块",
-                    "summary": "查看操作日志",
+                    "module": "audit log",
+                    "summary": "fetch audit log",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:44"
                 },
@@ -471,8 +471,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 3,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
                 },
@@ -485,7 +485,7 @@
                     "path": "/api/v1/base/userapi",
                     "response_time": 0,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user API",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -499,7 +499,7 @@
                     "path": "/api/v1/base/usermenu",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user menu",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -513,7 +513,7 @@
                     "path": "/api/v1/base/userinfo",
                     "response_time": 2,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user data",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -530,8 +530,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 4,
                     "created_at": "2025-06-28 18:42:39",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:39"
                 },
@@ -544,7 +544,7 @@
                     "path": "/api/v1/base/userapi",
                     "response_time": 0,
                     "created_at": "2025-06-28 18:42:38",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user API",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:38"
@@ -558,7 +558,7 @@
                     "path": "/api/v1/base/usermenu",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:42:38",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user menu",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:38"
@@ -572,7 +572,7 @@
                     "path": "/api/v1/base/userinfo",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:42:37",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user data",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:37"
@@ -589,8 +589,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 3,
                     "created_at": "2025-06-28 18:41:58",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:41:58"
                 }
@@ -602,7 +602,7 @@
         "created_at": "2025-06-28 18:43:49",
         "response_time": 14,
         "updated_at": "2025-06-28 18:43:49",
-        "module": "审计日志模块",
+        "module": "audit log",
         "request_args": {
             "start_time": "2025-06-28 00:00:00",
             "end_time": "2025-06-28 23:59:59",
@@ -616,7 +616,7 @@
         "id": 283
     },
     {
-        "summary": "查看操作日志",
+        "summary": "fetch audit log",
         "path": "/api/v1/auditlog/list",
         "method": "GET",
         "response_body": {
@@ -635,8 +635,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 3,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
                 },
@@ -649,7 +649,7 @@
                     "path": "/api/v1/base/userapi",
                     "response_time": 0,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user API",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -663,7 +663,7 @@
                     "path": "/api/v1/base/usermenu",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user menu",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -677,7 +677,7 @@
                     "path": "/api/v1/base/userinfo",
                     "response_time": 2,
                     "created_at": "2025-06-28 18:43:36",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user data",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:43:36"
@@ -694,8 +694,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 4,
                     "created_at": "2025-06-28 18:42:39",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:39"
                 },
@@ -708,7 +708,7 @@
                     "path": "/api/v1/base/userapi",
                     "response_time": 0,
                     "created_at": "2025-06-28 18:42:38",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user API",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:38"
@@ -722,7 +722,7 @@
                     "path": "/api/v1/base/usermenu",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:42:38",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user menu",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:38"
@@ -736,7 +736,7 @@
                     "path": "/api/v1/base/userinfo",
                     "response_time": 1,
                     "created_at": "2025-06-28 18:42:37",
-                    "module": "基础模块",
+                    "module": "base",
                     "summary": "fetch user data",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:42:37"
@@ -753,8 +753,8 @@
                     "path": "/api/v1/role/list",
                     "response_time": 3,
                     "created_at": "2025-06-28 18:41:58",
-                    "module": "角色模块",
-                    "summary": "查看角色列表",
+                    "module": "role",
+                    "summary": "fetch role list",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:41:58"
                 },
@@ -773,7 +773,7 @@
                     "path": "/api/v1/role/update",
                     "response_time": 8,
                     "created_at": "2025-06-28 18:41:58",
-                    "module": "角色模块",
+                    "module": "role",
                     "summary": "更新角色",
                     "user_id": 0,
                     "updated_at": "2025-06-28 18:41:58"
@@ -786,7 +786,7 @@
         "created_at": "2025-06-28 18:43:44",
         "response_time": 7,
         "updated_at": "2025-06-28 18:43:44",
-        "module": "审计日志模块",
+        "module": "audit log",
         "request_args": {
             "start_time": "2025-06-28 00:00:00",
             "end_time": "2025-06-28 23:59:59",
@@ -799,7 +799,7 @@
         "id": 282
     },
     {
-        "summary": "查看角色列表",
+        "summary": "fetch role list",
         "path": "/api/v1/role/list",
         "method": "GET",
         "response_body": {
@@ -828,7 +828,7 @@
         "created_at": "2025-06-28 18:43:36",
         "response_time": 3,
         "updated_at": "2025-06-28 18:43:36",
-        "module": "角色模块",
+        "module": "role",
         "request_args": {
             "page": "1",
             "page_size": "10"
@@ -876,7 +876,7 @@
         "created_at": "2025-06-28 18:43:36",
         "response_time": 0,
         "updated_at": "2025-06-28 18:43:36",
-        "module": "基础模块",
+        "module": "base",
         "request_args": {},
         "status": 200,
         "username": "",
@@ -978,7 +978,7 @@
         "created_at": "2025-06-28 18:43:36",
         "response_time": 1,
         "updated_at": "2025-06-28 18:43:36",
-        "module": "基础模块",
+        "module": "base",
         "request_args": {},
         "status": 200,
         "username": "",

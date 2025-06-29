@@ -30,14 +30,14 @@
         </template>
         <div flex flex-wrap justify-between>
           <n-card
-            v-for="i in 9"
+            v-for="i in 3"
             :key="i"
             class="mb-10 mt-10 w-300 cursor-pointer"
             hover:card-shadow
-            title="Vue FastAPI Admin"
+            :title="dummyTitles[i - 1]"
             size="small"
           >
-            <p op-60>{{ dummyText }}</p>
+            <p op-60>{{ dummyTexts[i - 1] }}</p>
           </n-card>
         </div>
       </n-card>
@@ -50,7 +50,16 @@ import { useUserStore } from '@/store'
 import { useI18n } from 'vue-i18n'
 import placeholder from '@/assets/images/placeholder.jpg'
 
-const dummyText = '一个基于 Vue3.0、FastAPI、Naive UI 的轻量级后台管理模板'
+const dummyTitles = [
+    "CRM Frontend",
+    "Inventory Dashboard",
+    "Task Tracker API",
+]
+const dummyTexts =[
+  "Frontend project for managing customer relationships.",
+  "A web app to monitor and manage product inventory levels in real time.",
+  "Backend API service for handling task assignments, statuses, and notifications.",
+]
 const { t } = useI18n({ useScope: 'global' })
 
 const statisticData = computed(() => [
