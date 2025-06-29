@@ -204,40 +204,6 @@ const columns = [
             default: () => h('div', {}, '确定删除该用户吗?'),
           }
         ),
-        !row.is_superuser && h(
-          NPopconfirm,
-          {
-            onPositiveClick: async () => {
-              try {
-                await api.resetPassword({ user_id: row.id });
-                $message.success('密码已成功重置为123456');
-                await $table.value?.handleSearch();
-              } catch (error) {
-                $message.error('重置密码失败: ' + error.message);
-              }
-            },
-            onNegativeClick: () => {},
-          },
-          {
-            trigger: () =>
-              withDirectives(
-                h(
-                  NButton,
-                  {
-                    size: 'small',
-                    type: 'warning',
-                    style: 'margin-right: 8px;',
-                  },
-                  {
-                    default: () => '重置密码',
-                    icon: renderIcon('material-symbols:lock-reset', { size: 16 }),
-                  }
-                ),
-                [[vPermission, 'post/api/v1/user/reset_password']]
-              ),
-            default: () => h('div', {}, '确定重置用户密码为123456吗?'),
-          }
-        ),
       ]
     },
   },

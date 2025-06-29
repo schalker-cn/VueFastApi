@@ -1,81 +1,156 @@
 import logging
 
-from fastapi import APIRouter, Body, Query
+from fastapi import APIRouter, Body, HTTPException, Query
 from tortoise.expressions import Q
 
 from app.controllers.dept import dept_controller
 from app.controllers.user import user_controller
 from app.schemas.base import Fail, Success, SuccessExtra
 from app.schemas.users import *
+import os
+import json
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-@router.get("/list", summary="查看用户列表")
+def flatten_depts(depts):
+    flat = []
+    for dept in depts:
+        flat.append(dept)
+        if dept.get("children"):
+            flat.extend(flatten_depts(dept["children"]))
+    return flat
+
+@router.get("/list", summary="fetch user list")
 async def list_user(
-    page: int = Query(1, description="页码"),
-    page_size: int = Query(10, description="每页数量"),
-    username: str = Query("", description="用户名称，用于搜索"),
-    email: str = Query("", description="邮箱地址"),
-    dept_id: int = Query(None, description="部门ID"),
+    page: int = Query(1, description="page number"),
+    page_size: int = Query(10, description="user per page"),
+    username: str = Query("", description="username"),
+    email: str = Query("", description="user's email"),
+    dept_id: int = Query(None, description="dept ID"),
 ):
-    q = Q()
+    mock_path = os.path.join(BASE_DIR, "../mock/user", "USER_MOCK.json")
+    dept_path = os.path.join(BASE_DIR, "../mock/dept", "DEPT_MOCK.json")
+
+    with open(mock_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    with open(dept_path, encoding="utf-8") as f:
+        dept_data = json.load(f)
+    flat_depts = flatten_depts(dept_data)
+
     if username:
-        q &= Q(username__contains=username)
+        data = [user for user in data if username.lower() in user["username"].lower()]
+
     if email:
-        q &= Q(email__contains=email)
+        data = [user for user in data if user["email"] and email.lower() in user["email"].lower()]
+
     if dept_id is not None:
-        q &= Q(dept_id=dept_id)
-    total, user_objs = await user_controller.list(page=page, page_size=page_size, search=q)
-    data = [await obj.to_dict(m2m=True, exclude_fields=["password"]) for obj in user_objs]
-    for item in data:
-        dept_id = item.pop("dept_id", None)
-        item["dept"] = await (await dept_controller.get(id=dept_id)).to_dict() if dept_id else {}
+        data = [user for user in data if user.get("dept_id") == dept_id]
+
+    for d in data:
+        dept_match = next((dept for dept in flat_depts if dept["id"] == d.get("dept_id")), None)
+        d["dept"] = dept_match
+    total = len(data)
 
     return SuccessExtra(data=data, total=total, page=page, page_size=page_size)
 
 
-@router.get("/get", summary="查看用户")
-async def get_user(
-    user_id: int = Query(..., description="用户ID"),
-):
-    user_obj = await user_controller.get(id=user_id)
-    user_dict = await user_obj.to_dict(exclude_fields=["password"])
-    return Success(data=user_dict)
-
-
-@router.post("/create", summary="创建用户")
+@router.post("/create", summary="create user")
 async def create_user(
     user_in: UserCreate,
 ):
-    user = await user_controller.get_by_email(user_in.email)
-    if user:
+    user_path = os.path.join(BASE_DIR, "../mock/user", "USER_MOCK.json")
+    role_path = os.path.join(BASE_DIR, "../mock/role", "ROLE_MOCK.json")
+
+    with open(user_path, encoding="utf-8") as f:
+        users = json.load(f)
+
+    if any(u["email"] == user_in.email for u in users):
         return Fail(code=400, msg="The user with this email already exists in the system.")
-    new_user = await user_controller.create_user(obj_in=user_in)
-    await user_controller.update_roles(new_user, user_in.role_ids)
-    return Success(msg="Created Successfully")
+
+    new_id = max([u["id"] for u in users], default=0) + 1
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open(role_path, encoding="utf-8") as f:
+        all_roles = json.load(f)
+    role_objs = [r for r in all_roles if r["id"] in user_in.role_ids]
+
+    new_user = {
+        "id": new_id,
+        "email": user_in.email,
+        "username": user_in.username,
+        "is_active": user_in.is_active,
+        "is_superuser": user_in.is_superuser,
+        "dept_id": user_in.dept_id,
+        "roles": role_objs,
+        "phone": None,
+        "alias": None,
+        "last_login": None,
+        "created_at": now,
+        "updated_at": now,
+    }
+
+    users.append(new_user)
+    with open(user_path, "w", encoding="utf-8") as f:
+        json.dump(users, f, indent=2, ensure_ascii=False)
+
+    return Success(msg="Created Successfully", data=new_user)
 
 
-@router.post("/update", summary="更新用户")
+@router.post("/update", summary="update user")
 async def update_user(
     user_in: UserUpdate,
 ):
-    user = await user_controller.update(id=user_in.id, obj_in=user_in)
-    await user_controller.update_roles(user, user_in.role_ids)
-    return Success(msg="Updated Successfully")
+    user_path = os.path.join(BASE_DIR, "../mock/user", "USER_MOCK.json")
+    role_path = os.path.join(BASE_DIR, "../mock/role", "ROLE_MOCK.json")
+
+    with open(user_path, encoding="utf-8") as f:
+        users = json.load(f)
+
+    user = next((u for u in users if u["id"] == user_in.id), None)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    
+    if any(u["email"] == user_in.email and u["id"] != user_in.id for u in users):
+        return Fail(code=400, msg="The user with this email already exists in the system.")
+
+    with open(role_path, encoding="utf-8") as f:
+        all_roles = json.load(f)
+    role_objs = [r for r in all_roles if r["id"] in user_in.role_ids]
+
+    user["email"] = user_in.email
+    user["username"] = user_in.username
+    user["is_active"] = user_in.is_active
+    user["is_superuser"] = user_in.is_superuser
+    user["dept_id"] = user_in.dept_id
+    user["roles"] = role_objs
+    user["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open(user_path, "w", encoding="utf-8") as f:
+        json.dump(users, f, indent=2, ensure_ascii=False)
+
+    return Success(msg="Updated Successfully", data=user)
 
 
-@router.delete("/delete", summary="删除用户")
+@router.delete("/delete", summary="delete user")
 async def delete_user(
-    user_id: int = Query(..., description="用户ID"),
+    user_id: int = Query(..., description="user ID"),
 ):
-    await user_controller.remove(id=user_id)
-    return Success(msg="Deleted Successfully")
+    user_path = os.path.join(BASE_DIR, "../mock/user", "USER_MOCK.json")
+    with open(user_path, encoding="utf-8") as f:
+        users = json.load(f)
+        
+    index = next((i for i, u in enumerate(users) if u["id"] == user_id), None)
 
+    if index is None:
+        raise HTTPException(status_code=404, detail="User not found.")
 
-@router.post("/reset_password", summary="重置密码")
-async def reset_password(user_id: int = Body(..., description="用户ID", embed=True)):
-    await user_controller.reset_password(user_id)
-    return Success(msg="密码已重置为123456")
+    deleted_user = users.pop(index)
+    with open(user_path, "w", encoding="utf-8") as f:
+        json.dump(users, f, indent=2, ensure_ascii=False)
+
+    return Success(msg="Deleted Success", data=deleted_user)

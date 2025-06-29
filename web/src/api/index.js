@@ -9,11 +9,9 @@ export default {
   updatePassword: (data = {}) => request.post('/base/update_password', data),
   // users
   getUserList: (params = {}) => request.get('/user/list', { params }),
-  getUserById: (params = {}) => request.get('/user/get', { params }),
   createUser: (data = {}) => request.post('/user/create', data),
   updateUser: (data = {}) => request.post('/user/update', data),
   deleteUser: (params = {}) => request.delete(`/user/delete`, { params }),
-  resetPassword: (data = {}) => request.post(`/user/reset_password`, data),
   // role
   getRoleList: (params = {}) => request.get('/role/list', { params }),
   createRole: (data = {}) => request.post('/role/create', data),
