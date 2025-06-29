@@ -166,7 +166,7 @@ const columns = [
             v-model:value="queryItems.name"
             clearable
             type="text"
-            placeholder="please input dept name"
+            placeholder="department name"
             @keypress.enter="$table?.handleSearch()"
           />
         </QueryBarItem>
