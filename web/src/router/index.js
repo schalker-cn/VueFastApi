@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { setupRouterGuard } from './guard'
-import { basicRoutes, EMPTY_ROUTE, NOT_FOUND_ROUTE } from './routes'
+import { basicRoutes, EMPTY_ROUTE} from './routes'
 import { getToken, isNullOrWhitespace } from '@/utils'
 import { useUserStore, usePermissionStore } from '@/store'
 
@@ -46,7 +46,6 @@ export async function addDynamicRoutes() {
       !router.hasRoute(route.name) && router.addRoute(route)
     })
     router.hasRoute(EMPTY_ROUTE.name) && router.removeRoute(EMPTY_ROUTE.name)
-    router.addRoute(NOT_FOUND_ROUTE)
   } catch (error) {
     console.error('error', error)
     const userStore = useUserStore()
