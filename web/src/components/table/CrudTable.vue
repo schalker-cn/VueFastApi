@@ -21,14 +21,14 @@
 <script setup>
 const props = defineProps({
   /**
-   * @remote true: 后端分页  false： 前端分页
+   * @remote true: backend pagination  false： frontend pagination
    */
   remote: {
     type: Boolean,
     default: true,
   },
   /**
-   * @remote 是否分页
+   * @remote is pagination enabled
    */
   isPagination: {
     type: Boolean,
@@ -46,14 +46,14 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  /** queryBar中的参数 */
+  /** params in queryBar */
   queryItems: {
     type: Object,
     default() {
       return {}
     },
   },
-  /** 补充参数（可选） */
+  /** optional extra params  */
   extraParams: {
     type: Object,
     default() {
@@ -61,10 +61,10 @@ const props = defineProps({
     },
   },
   /**
-   * ! 约定接口入参出参
-   * * 分页模式需约定分页接口入参
-   *    @page_size 分页参数：一页展示多少条，默认10
-   *    @page   分页参数：页码，默认1
+   * ! params of the interface to get data
+   * * set pagination params if isPagination is true
+   *    @page_size pagination size：how many records per page, default 10
+   *    @page   pagination number： number of the page，default 1
    */
   getData: {
     type: Function,
@@ -98,7 +98,7 @@ async function handleQuery() {
   try {
     loading.value = true
     let paginationParams = {}
-    // 如果非分页模式或者使用前端分页,则无需传分页参数
+    // if isPagination is true or using frontend pagination, set paginationParams to empty
     if (props.isPagination && props.remote) {
       paginationParams = { page: pagination.page, page_size: pagination.page_size }
     }

@@ -37,7 +37,7 @@ import AppTags from './components/tags/index.vue'
 import { useAppStore } from '@/store'
 import { header, tags } from '~/settings'
 
-// 移动端适配
+// mobile version adaption
 import { useBreakpoints } from '@vueuse/core'
 
 const appStore = useAppStore()

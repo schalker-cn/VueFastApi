@@ -22,8 +22,6 @@
 <script setup>
 import { defineComponent, h } from 'vue'
 import {
-  zhCN,
-  dateZhCN,
   darkTheme,
   useLoadingBar,
   useDialog,
@@ -47,7 +45,7 @@ function setupCssVar() {
   }
 }
 
-// 挂载naive组件的方法至window, 以便在全局使用
+// add Naive components to global window object
 function setupNaiveTools() {
   window.$loadingBar = useLoadingBar()
   window.$notification = useNotification()

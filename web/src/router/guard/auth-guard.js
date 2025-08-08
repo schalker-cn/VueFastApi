@@ -5,13 +5,13 @@ export function createAuthGuard(router) {
   router.beforeEach(async (to) => {
     const token = getToken()
 
-    /** 没有token的情况 */
+    /** no token case */
     if (isNullOrWhitespace(token)) {
       if (WHITE_LIST.includes(to.path)) return true
       return { path: 'login', query: { ...to.query, redirect: to.path } }
     }
 
-    /** 有token的情况 */
+    /** token case */
     if (to.path === '/login') return { path: '/' }
     return true
   })

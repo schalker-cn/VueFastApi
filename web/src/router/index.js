@@ -30,12 +30,12 @@ export async function resetRouter() {
 export async function addDynamicRoutes() {
   const token = getToken()
 
-  // 没有token情况
+  // no token case
   if (isNullOrWhitespace(token)) {
     router.addRoute(EMPTY_ROUTE)
     return
   }
-  // 有token的情况
+  // token case
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
   !userStore.userId && (await userStore.getUserInfo())

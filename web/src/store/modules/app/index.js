@@ -13,7 +13,7 @@ export const useAppStore = defineStore('app', {
       reloadFlag: true,
       collapsed: false,
       fullScreen: true,
-      /** keepAlive路由的key，重新赋值可重置keepAlive */
+      /** key of keepalive routing */
       aliveKeys: {},
       isDark,
       locale: currentLocale || 'en',
@@ -43,11 +43,9 @@ export const useAppStore = defineStore('app', {
     setAliveKeys(key, val) {
       this.aliveKeys[key] = val
     },
-    /** 设置暗黑模式 */
     setDark(isDark) {
       this.isDark = isDark
     },
-    /** 切换/关闭 暗黑模式 */
     toggleDark() {
       this.isDark = !this.isDark
     },

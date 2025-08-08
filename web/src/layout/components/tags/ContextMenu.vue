@@ -40,31 +40,31 @@ const appStore = useAppStore()
 
 const options = computed(() => [
   {
-    label: '重新加载',
+    label: 'reload',
     key: 'reload',
     disabled: props.currentPath !== tagsStore.activeTag,
     icon: renderIcon('mdi:refresh', { size: '14px' }),
   },
   {
-    label: '关闭',
+    label: 'close',
     key: 'close',
     disabled: tagsStore.tags.length <= 1,
     icon: renderIcon('mdi:close', { size: '14px' }),
   },
   {
-    label: '关闭其他',
+    label: 'close other',
     key: 'close-other',
     disabled: tagsStore.tags.length <= 1,
     icon: renderIcon('mdi:arrow-expand-horizontal', { size: '14px' }),
   },
   {
-    label: '关闭左侧',
+    label: 'close left',
     key: 'close-left',
     disabled: tagsStore.tags.length <= 1 || props.currentPath === tagsStore.tags[0].path,
     icon: renderIcon('mdi:arrow-expand-left', { size: '14px' }),
   },
   {
-    label: '关闭右侧',
+    label: 'close right',
     key: 'close-right',
     disabled:
       tagsStore.tags.length <= 1 ||
@@ -79,7 +79,7 @@ const actionMap = new Map([
     'reload',
     () => {
       if (route.meta?.keepAlive) {
-        // 重置keepAlive
+        // reset keepAlive
         appStore.setAliveKeys(route.name, +new Date())
       }
       appStore.reloadPage()
