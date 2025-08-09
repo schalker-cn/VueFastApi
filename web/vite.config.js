@@ -4,6 +4,7 @@ import { convertEnv, getSrcPath, getRootPath } from './build/utils'
 import { viteDefine } from './build/config'
 import { createVitePlugins } from './build/plugin'
 import { OUTPUT_DIR, PROXY_CONFIG } from './build/constant'
+import { viteMockServe } from 'vite-plugin-mock'
 
 export default defineConfig(({ command, mode }) => {
   const srcPath = getSrcPath()
@@ -23,7 +24,14 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     define: viteDefine,
-    plugins: createVitePlugins(viteEnv, isBuild),
+    plugins: [
+      ...createVitePlugins(viteEnv, isBuild),
+      viteMockServe({
+        mockPath: 'src/mocks',
+        localEnabled: !isBuild,
+        watchFiles: true,
+      }),
+    ],
     server: {
       host: '0.0.0.0',
       port: VITE_PORT,
