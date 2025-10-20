@@ -4,7 +4,11 @@
       <n-card rounded-10>
         <div flex items-center justify-between>
           <div flex items-center>
-            <img rounded-full width="60" :src="placeholder" />
+            <img
+              rounded-full
+              width="60"
+              src="https://placehold.co/1920/0606FC/0606FC?text=1"
+            />
             <div ml-10>
               <p text-20 font-semibold>
                 {{ $t('views.workbench.text_hello', { username: userStore.name }) }}
@@ -48,7 +52,6 @@
 <script setup>
 import { useUserStore } from '@/store'
 import { useI18n } from 'vue-i18n'
-import placeholder from '@/assets/images/placeholder.jpg'
 
 const dummyTitles = [
     "CRM Frontend",

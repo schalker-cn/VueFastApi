@@ -1,7 +1,7 @@
 <template>
   <n-dropdown :options="options" @select="handleSelect">
     <div flex cursor-pointer items-center>
-      <img :src="placeholder" mr10 h-35 w-35 rounded-full />
+      <img src="https://placehold.co/1920/0606FC/0606FC?text=1" mr10 h-35 w-35 rounded-full />
       <span>{{ userStore.name }}</span>
     </div>
   </n-dropdown>
@@ -12,7 +12,6 @@ import { useUserStore } from '@/store'
 import { renderIcon } from '@/utils'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import placeholder from '@/assets/images/placeholder.jpg'
 
 const { t } = useI18n()
 

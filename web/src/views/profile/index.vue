@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n'
 import CommonPage from '@/components/page/CommonPage.vue'
 import { useUserStore } from '@/store'
 import api from '@/api'
-import placeholder from '@/assets/images/placeholder.jpg'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -61,7 +60,7 @@ const infoFormRules = {
             class="w-400"
           >
             <NFormItem :label="$t('views.profile.label_avatar')" path="avatar">
-              <NImage width="100" :src="placeholder"></NImage>
+              <NImage width="100" src="https://placehold.co/1920/0606FC/0606FC?text=1"></NImage>
             </NFormItem>
             <NFormItem :label="$t('views.profile.label_username')" path="username">
               <NInput
