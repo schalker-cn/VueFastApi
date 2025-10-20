@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { NInput, NSelect, NPopover } from 'naive-ui'
-import TheIcon from '@/components/icon/TheIcon.vue'
 
 import CommonPage from '@/components/page/CommonPage.vue'
 import QueryBarItem from '@/components/query-bar/QueryBarItem.vue'
@@ -144,7 +143,12 @@ const columns = [
         },
         {
           trigger: () =>
-            h('div', { style: 'cursor: pointer;' }, [h(TheIcon, { icon: 'carbon:data-view' })]),
+            h('div', 
+              { style: 'cursor: pointer;' }, 
+              [h('img', {
+                          src: 'https://placehold.co/1920/0606FC/0606FC?text=1',
+                          style: 'width: 20px; height: 20px; border-radius: 4px;'
+                        })]),
           default: () =>
             h(
               'pre',
@@ -172,7 +176,12 @@ const columns = [
         },
         {
           trigger: () =>
-            h('div', { style: 'cursor: pointer;' }, [h(TheIcon, { icon: 'carbon:data-view' })]),
+            h('div', 
+              { style: 'cursor: pointer;' }, 
+              [h('img', {
+                          src: 'https://placehold.co/1920/0606FC/0606FC?text=1',
+                          style: 'width: 20px; height: 20px; border-radius: 4px;'
+                        })]),
           default: () =>
             h(
               'pre',

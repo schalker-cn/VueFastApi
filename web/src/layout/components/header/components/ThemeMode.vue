@@ -11,8 +11,11 @@ const toggleDark = () => {
 </script>
 
 <template>
-  <n-icon mr-20 cursor-pointer size="18" @click="toggleDark">
-    <icon-mdi-moon-waning-crescent v-if="isDark" />
-    <icon-mdi-white-balance-sunny v-else />
+  <n-icon mr-20 cursor-pointer size="18">
+    <img
+      class="collapse-icon"
+      src="https://placehold.co/20/0606FC/0606FC?text=1"
+      @click="toggleDark"
+    />
   </n-icon>
 </template>

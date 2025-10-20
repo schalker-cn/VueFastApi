@@ -20,7 +20,6 @@ export const basicRoutes = [
         name: `${t('views.workbench.label_workbench')}Default`,
         meta: {
           title: t('views.workbench.label_workbench'),
-          icon: 'icon-park-outline:workbench',
           affix: true,
         },
       },

@@ -127,7 +127,6 @@ const columns = [
         { size: 'small', type: 'text', ghost: true },
         {
           default: () => (row.last_login !== null ? formatDate(row.last_login) : null),
-          icon: renderIcon('mdi:update', { size: 16 }),
         }
       )
     },
@@ -173,7 +172,6 @@ const columns = [
             },
             {
               default: () => 'edit',
-              icon: renderIcon('material-symbols:edit', { size: 16 }),
             }
           ),
           [[vPermission, 'post/api/v1/user/update']]
@@ -196,7 +194,6 @@ const columns = [
                   },
                   {
                     default: () => 'delete',
-                    icon: renderIcon('material-symbols:delete-outline', { size: 16 }),
                   }
                 ),
                 [[vPermission, 'delete/api/v1/user/delete']]

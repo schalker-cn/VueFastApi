@@ -91,7 +91,7 @@ export default [
     url: '/api/v1/user/update',
     method: 'post',
     response: ({ body }) => {
-      const { id, email, username, is_active, is_superuser, dept_id, role_ids } = body
+      const { id, email, username, is_active, is_superuser, dept_id, role_ids = [] } = body
       const user = USER_MOCK.find(u => u.id === id)
       if (!user) {
         return { code: 404, msg: 'User not found.' }

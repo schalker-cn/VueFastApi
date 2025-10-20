@@ -23,12 +23,10 @@ const options = [
   {
     label: t('header.label_profile'),
     key: 'profile',
-    icon: renderIcon('mdi-account-arrow-right-outline', { size: '14px' }),
   },
   {
     label: t('header.label_logout'),
     key: 'logout',
-    icon: renderIcon('mdi:exit-to-app', { size: '14px' }),
   },
 ]
 

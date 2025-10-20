@@ -103,7 +103,6 @@ const columns = [
             },
             {
               default: () => 'edit',
-              icon: renderIcon('material-symbols:edit', { size: 16 }),
             }
           ),
           [[vPermission, 'post/api/v1/dept/update']]
@@ -126,7 +125,6 @@ const columns = [
                   },
                   {
                     default: () => 'delete',
-                    icon: renderIcon('material-symbols:delete-outline', { size: 16 }),
                   }
                 ),
                 [[vPermission, 'delete/api/v1/dept/delete']]

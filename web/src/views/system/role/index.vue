@@ -108,7 +108,6 @@ const columns = [
             },
             {
               default: () => 'edit',
-              icon: renderIcon('material-symbols:edit-outline', { size: 16 }),
             }
           ),
           [[vPermission, 'post/api/v1/role/update']]
@@ -131,7 +130,6 @@ const columns = [
                   },
                   {
                     default: () => 'delete',
-                    icon: renderIcon('material-symbols:delete-outline', { size: 16 }),
                   }
                 ),
                 [[vPermission, 'delete/api/v1/role/delete']]
@@ -165,7 +163,6 @@ const columns = [
             },
             {
               default: () => 'set access',
-              icon: renderIcon('material-symbols:edit-outline', { size: 16 }),
             }
           ),
           [[vPermission, 'get/api/v1/role/authorized']]
