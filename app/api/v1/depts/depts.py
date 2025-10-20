@@ -19,6 +19,14 @@ async def list_dept(
         data = json.load(f)
     return Success(data=data)
 
+@router.get("/get", summary="fetch department details")
+async def get_dept(
+    id: int = Query(..., description="department ID"),
+):
+    dept_obj = await dept_controller.get(id=id)
+    data = await dept_obj.to_dict()
+    return Success(data=data)
+
 
 def insert_dept_node(depts: List[dict], parent_id: int, new_dept: dict) -> bool:
     for dept in depts:

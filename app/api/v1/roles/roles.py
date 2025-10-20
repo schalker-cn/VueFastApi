@@ -31,6 +31,12 @@ async def list_role(
     total = len(data)
     return SuccessExtra(data=data, total=total, page=page, page_size=page_size)
 
+@router.get("/get", summary="fetch user role")
+async def get_role(
+    role_id: int = Query(..., description="role ID"),
+):
+    role_obj = await role_controller.get(id=role_id)
+    return Success(data=await role_obj.to_dict())
 
 @router.post("/create", summary="create role")
 async def create_role(role_in: RoleCreate):
@@ -112,6 +118,11 @@ async def delete_role(
 
     return Success(msg="Deleted Success", data=deleted_role)
 
+@router.post("/authorized", summary="update role authorized info")
+async def update_role_authorized(role_in: RoleUpdateMenusApis):
+    role_obj = await role_controller.get(id=role_in.id)
+    await role_controller.update_roles(role=role_obj, menu_ids=role_in.menu_ids, api_infos=role_in.api_infos)
+    return Success(msg="Updated Successfully")
 
 @router.get("/authorized", summary="fetch role authorized info")
 async def get_role_authorized(id: int = Query(..., description="role ID")):

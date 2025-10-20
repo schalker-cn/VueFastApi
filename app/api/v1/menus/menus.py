@@ -24,6 +24,12 @@ async def list_menu(
         data = json.load(f)
     return SuccessExtra(data=data, total=len(data), page=page, page_size=page_size)
 
+@router.get("/get", summary="ftehc menu details")
+async def get_menu(
+    menu_id: int = Query(..., description="menu id"),
+):
+    result = await menu_controller.get(id=menu_id)
+    return Success(data=result)
 
 @router.post("/update", summary="update menu")
 async def update_menu(
@@ -44,3 +50,12 @@ async def update_menu(
             target[key] = value
     return Success(msg="Updated Success")
 
+@router.delete("/delete", summary="delete menu")
+async def delete_menu(
+    id: int = Query(..., description="menu id"),
+):
+    child_menu_count = await menu_controller.model.filter(parent_id=id).count()
+    if child_menu_count > 0:
+        return Fail(msg="Cannot delete a menu with child menus")
+    await menu_controller.remove(id=id)
+    return Success(msg="Deleted Success")

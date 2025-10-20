@@ -57,6 +57,12 @@ export const basicRoutes = [
   },
 ]
 
+export const NOT_FOUND_ROUTE = {
+  name: 'NotFound',
+  path: '/:pathMatch(.*)*',
+  redirect: '/404',
+  isHidden: true,
+}
 
 export const EMPTY_ROUTE = {
   name: 'Empty',

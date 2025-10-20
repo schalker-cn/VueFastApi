@@ -43,3 +43,13 @@ async def get_user_api():
         data = json.load(f)
     return Success(data=data)
 
+@router.post("/update_password", summary="change password", dependencies=[DependAuth])
+async def update_user_password(req_in: UpdatePassword):
+    user_id = CTX_USER_ID.get()
+    user = await user_controller.get(user_id)
+    verified = verify_password(req_in.old_password, user.password)
+    if not verified:
+        return Fail(msg="wrong password!")
+    user.password = get_password_hash(req_in.new_password)
+    await user.save()
+    return Success(msg="successfully changed password")
