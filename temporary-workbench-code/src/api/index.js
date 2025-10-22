@@ -9,23 +9,18 @@ export default {
   updatePassword: (data = {}) => request.post('/base/update_password', data),
   // users
   getUserList: (params = {}) => request.get('/user/list', { params }),
-  getUserById: (params = {}) => request.get('/user/get', { params }),
   createUser: (data = {}) => request.post('/user/create', data),
   updateUser: (data = {}) => request.post('/user/update', data),
   deleteUser: (params = {}) => request.delete(`/user/delete`, { params }),
-  resetPassword: (data = {}) => request.post(`/user/reset_password`, data),
   // role
   getRoleList: (params = {}) => request.get('/role/list', { params }),
   createRole: (data = {}) => request.post('/role/create', data),
   updateRole: (data = {}) => request.post('/role/update', data),
   deleteRole: (params = {}) => request.delete('/role/delete', { params }),
-  updateRoleAuthorized: (data = {}) => request.post('/role/authorized', data),
   getRoleAuthorized: (params = {}) => request.get('/role/authorized', { params }),
   // menus
   getMenus: (params = {}) => request.get('/menu/list', { params }),
-  createMenu: (data = {}) => request.post('/menu/create', data),
   updateMenu: (data = {}) => request.post('/menu/update', data),
-  deleteMenu: (params = {}) => request.delete('/menu/delete', { params }),
   // depts
   getDepts: (params = {}) => request.get('/dept/list', { params }),
   createDept: (data = {}) => request.post('/dept/create', data),

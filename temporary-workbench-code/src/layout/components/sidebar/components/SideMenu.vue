@@ -60,7 +60,7 @@ function getMenuItem(route, basePath = '') {
   if (!visibleChildren.length) return menuItem
 
   if (visibleChildren.length === 1) {
-    // 单个子路由处理
+    // handle routing event
     const singleRoute = visibleChildren[0]
     menuItem = {
       ...menuItem,

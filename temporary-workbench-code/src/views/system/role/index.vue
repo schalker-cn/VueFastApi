@@ -1,5 +1,5 @@
 <script setup>
-import { h, onMounted, ref, resolveDirective, withDirectives } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import {
   NButton,
   NForm,
@@ -28,7 +28,6 @@ defineOptions({ name: 'Role Management' })
 
 const $table = ref(null)
 const queryItems = ref({})
-const vPermission = resolveDirective('permission')
 
 const {
   modalVisible,
@@ -95,7 +94,6 @@ const columns = [
     fixed: 'right',
     render(row) {
       return [
-        withDirectives(
           h(
             NButton,
             {
@@ -110,8 +108,6 @@ const columns = [
               default: () => 'edit',
             }
           ),
-          [[vPermission, 'post/api/v1/role/update']]
-        ),
         h(
           NPopconfirm,
           {
@@ -120,7 +116,6 @@ const columns = [
           },
           {
             trigger: () =>
-              withDirectives(
                 h(
                   NButton,
                   {
@@ -132,12 +127,9 @@ const columns = [
                     default: () => 'delete',
                   }
                 ),
-                [[vPermission, 'delete/api/v1/role/delete']]
-              ),
             default: () => h('div', {}, 'are you sure to delete this role?'),
           }
         ),
-        withDirectives(
           h(
             NButton,
             {
@@ -165,8 +157,6 @@ const columns = [
               default: () => 'set access',
             }
           ),
-          [[vPermission, 'get/api/v1/role/authorized']]
-        ),
       ]
     },
   },
@@ -177,7 +167,7 @@ const columns = [
 <template>
   <CommonPage show-footer title="Role List">
     <template #action>
-      <NButton v-permission="'post/api/v1/role/create'" type="primary" @click="handleAdd">
+      <NButton type="primary" @click="handleAdd">
         <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />Create Role
       </NButton>
     </template>

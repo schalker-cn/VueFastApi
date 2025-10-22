@@ -1,5 +1,5 @@
 <script setup>
-import { h, onMounted, ref, resolveDirective, withDirectives } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import { NButton, NForm, NFormItem, NInput, NInputNumber, NPopconfirm, NTreeSelect } from 'naive-ui'
 
 import CommonPage from '@/components/page/CommonPage.vue'
@@ -8,16 +8,13 @@ import CrudModal from '@/components/table/CrudModal.vue'
 import CrudTable from '@/components/table/CrudTable.vue'
 import TheIcon from '@/components/icon/TheIcon.vue'
 
-import { renderIcon } from '@/utils'
 import { useCRUD } from '@/composables'
-// import { loginTypeMap, loginTypeOptions } from '@/constant/data'
 import api from '@/api'
 
 defineOptions({ name: 'Department Management' })
 
 const $table = ref(null)
 const queryItems = ref({})
-const vPermission = resolveDirective('permission')
 
 const {
   modalVisible,
@@ -84,7 +81,6 @@ const columns = [
     fixed: 'right',
     render(row) {
       return [
-        withDirectives(
           h(
             NButton,
             {
@@ -105,8 +101,6 @@ const columns = [
               default: () => 'edit',
             }
           ),
-          [[vPermission, 'post/api/v1/dept/update']]
-        ),
         h(
           NPopconfirm,
           {
@@ -115,7 +109,6 @@ const columns = [
           },
           {
             trigger: () =>
-              withDirectives(
                 h(
                   NButton,
                   {
@@ -127,8 +120,6 @@ const columns = [
                     default: () => 'delete',
                   }
                 ),
-                [[vPermission, 'delete/api/v1/dept/delete']]
-              ),
             default: () => h('div', {}, 'are you sure to delete this department?'),
           }
         ),
@@ -143,7 +134,6 @@ const columns = [
     <template #action>
       <div>
         <NButton
-          v-permission="'post/api/v1/dept/create'"
           class="float-right mr-15"
           type="primary"
           @click="addDepts"

@@ -1,5 +1,5 @@
 <script setup>
-import { h, onMounted, ref, resolveDirective, withDirectives } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import {
   NButton,
   NCheckbox,
@@ -34,7 +34,6 @@ defineOptions({ name: 'User Management' })
 
 const $table = ref(null)
 const queryItems = ref({})
-const vPermission = resolveDirective('permission')
 
 const {
   modalVisible,
@@ -156,7 +155,6 @@ const columns = [
     fixed: 'right',
     render(row) {
       return [
-        withDirectives(
           h(
             NButton,
             {
@@ -174,8 +172,6 @@ const columns = [
               default: () => 'edit',
             }
           ),
-          [[vPermission, 'post/api/v1/user/update']]
-        ),
         h(
           NPopconfirm,
           {
@@ -184,7 +180,6 @@ const columns = [
           },
           {
             trigger: () =>
-              withDirectives(
                 h(
                   NButton,
                   {
@@ -196,8 +191,6 @@ const columns = [
                     default: () => 'delete',
                   }
                 ),
-                [[vPermission, 'delete/api/v1/user/delete']]
-              ),
             default: () => h('div', {}, 'are you sure to delete this user?'),
           }
         ),
@@ -337,7 +330,7 @@ const validateAddUser = {
     <NLayoutContent>
       <CommonPage show-footer title="User List">
         <template #action>
-          <NButton v-permission="'post/api/v1/user/create'" type="primary" @click="handleAdd">
+          <NButton type="primary" @click="handleAdd">
             <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />Create User
           </NButton>
         </template>
