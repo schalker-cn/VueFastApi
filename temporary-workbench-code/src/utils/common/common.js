@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 
 /**
- * @desc  格式化时间
+ * @desc  time formatting
  * @param {(Object|string|number)} time
  * @param {string} format
  * @returns {string | null}
@@ -15,7 +15,7 @@ export function formatDate(date = undefined, format = 'YYYY-MM-DD') {
 }
 
 /**
- * @desc  函数节流
+ * @desc  throttle function
  * @param {Function} fn
  * @param {Number} wait
  * @returns {Function}
@@ -36,7 +36,7 @@ export function throttle(fn, wait) {
 }
 
 /**
- * @desc  函数防抖
+ * @desc  debounce function
  * @param {Function} func
  * @param {number} wait
  * @param {boolean} immediate
@@ -49,12 +49,8 @@ export function debounce(method, wait, immediate) {
     if (timeout) {
       clearTimeout(timeout)
     }
-    // 立即执行需要两个条件，一是immediate为true，二是timeout未被赋值或被置为null
+    // immediate execution requires two conditions: immediate is true and timeout is not set or is null
     if (immediate) {
-      /**
-       * 如果定时器不存在，则立即执行，并设置一个定时器，wait毫秒后将定时器置为null
-       * 这样确保立即执行后wait毫秒内不会被再次触发
-       */
       let callNow = !timeout
       timeout = setTimeout(() => {
         timeout = null
@@ -63,12 +59,7 @@ export function debounce(method, wait, immediate) {
         method.apply(context, args)
       }
     } else {
-      // 如果immediate为false，则函数wait毫秒后执行
       timeout = setTimeout(() => {
-        /**
-         * args是一个类数组对象，所以使用fn.apply
-         * 也可写作method.call(context, ...args)
-         */
         method.apply(context, args)
       }, wait)
     }
