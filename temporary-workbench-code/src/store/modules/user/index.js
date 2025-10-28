@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
-import { resetRouter } from '@/router'
-import { useTagsStore, usePermissionStore } from '@/store'
-import { removeToken, toLogin } from '@/utils'
 import api from '@/api'
+import { USER_MOCK } from '~/src/mocks/user/USER_MOCK'
 
 export const useUserStore = defineStore('user', {
   state() {
     return {
-      userInfo: {},
+      userInfo: USER_MOCK[0],
     }
   },
   getters: {
@@ -38,7 +36,6 @@ export const useUserStore = defineStore('user', {
       try {
         const res = await api.getUserInfo()
         if (res.code === 401) {
-          this.logout()
           return
         }
         const { id, username, email, avatar, roles, is_superuser, is_active } = res.data
@@ -47,16 +44,6 @@ export const useUserStore = defineStore('user', {
       } catch (error) {
         return error
       }
-    },
-    async logout() {
-      const { resetTags } = useTagsStore()
-      const { resetPermission } = usePermissionStore()
-      removeToken()
-      resetTags()
-      resetPermission()
-      resetRouter()
-      this.$reset()
-      toLogin()
     },
     setUserInfo(userInfo = {}) {
       this.userInfo = { ...this.userInfo, ...userInfo }

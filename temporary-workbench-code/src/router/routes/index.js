@@ -45,15 +45,6 @@ export const basicRoutes = [
     ],
     meta: { order: 99 },
   },
-  {
-    name: 'Login',
-    path: '/login',
-    component: () => import('@/views/login/index.vue'),
-    isHidden: true,
-    meta: {
-      title: 'login page',
-    },
-  },
 ]
 
 export const NOT_FOUND_ROUTE = {

@@ -1,9 +1,8 @@
 import { getToken } from '@/utils'
 import { resolveResError } from './helpers'
-import { useUserStore } from '@/store'
 
 export function reqResolve(config) {
-  // 处理不需要token的请求
+  // handle requests without token
   if (config.noNeedToken) {
     return config
   }
@@ -24,7 +23,7 @@ export function resResolve(response) {
   const { data, status, statusText } = response
   if (data?.code !== 200) {
     const code = data?.code ?? status
-    /** 根据code处理对应的操作，并返回处理后的message */
+    /** process the request with result code */
     const message = resolveResError(code, data?.msg ?? statusText)
     window.$message?.error(message, { keepAliveOnHover: true })
     return Promise.reject({ code, message, error: data || response })
@@ -35,7 +34,7 @@ export function resResolve(response) {
 export async function resReject(error) {
   if (!error || !error.response) {
     const code = error?.code
-    /** 根据code处理对应的操作，并返回处理后的message */
+    /** process the request with result code */
     const message = resolveResError(code, error.message)
     window.$message?.error(message)
     return Promise.reject({ code, message, error })
@@ -43,15 +42,10 @@ export async function resReject(error) {
   const { data, status } = error.response
 
   if (data?.code === 401) {
-    try {
-      const userStore = useUserStore()
-      userStore.logout()
-    } catch (error) {
-      console.log('resReject error', error)
-      return
-    }
+    console.log('resReject error', error)
+    return
   }
-  // 后端返回的response数据
+  // backend response
   const code = data?.code ?? status
   const message = resolveResError(code, data?.msg ?? error.message)
   window.$message?.error(message, { keepAliveOnHover: true })

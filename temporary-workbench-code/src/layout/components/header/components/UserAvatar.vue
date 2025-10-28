@@ -33,16 +33,6 @@ const options = [
 function handleSelect(key) {
   if (key === 'profile') {
     router.push('/profile')
-  } else if (key === 'logout') {
-    $dialog.confirm({
-      title: t('header.label_logout_dialog_title'),
-      type: 'warning',
-      content: t('header.text_logout_confirm'),
-      confirm() {
-        userStore.logout()
-        $message.success(t('header.text_logout_success'))
-      },
-    })
   }
 }
 </script>

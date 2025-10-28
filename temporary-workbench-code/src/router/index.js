@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { setupRouterGuard } from './guard'
 import { basicRoutes, EMPTY_ROUTE} from './routes'
-import { getToken, isNullOrWhitespace } from '@/utils'
 import { useUserStore, usePermissionStore } from '@/store'
 
 const isHash = import.meta.env.VITE_USE_HASH === 'true'
@@ -28,14 +27,7 @@ export async function resetRouter() {
 }
 
 export async function addDynamicRoutes() {
-  const token = getToken()
-
-  // no token case
-  if (isNullOrWhitespace(token)) {
-    router.addRoute(EMPTY_ROUTE)
-    return
-  }
-  // token case
+  
   const userStore = useUserStore()
   const permissionStore = usePermissionStore()
   !userStore.userId && (await userStore.getUserInfo())
@@ -48,8 +40,6 @@ export async function addDynamicRoutes() {
     router.hasRoute(EMPTY_ROUTE.name) && router.removeRoute(EMPTY_ROUTE.name)
   } catch (error) {
     console.error('error', error)
-    const userStore = useUserStore()
-    await userStore.logout()
   }
 }
 

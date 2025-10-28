@@ -2,9 +2,11 @@ import { defineStore } from 'pinia'
 import { basicRoutes, vueModules } from '@/router/routes'
 import Layout from '@/layout/index.vue'
 import api from '@/api'
+import { USER_MENU_MOCK } from '~/src/mocks/base/USER_MENU_MOCK'
+import { USER_API_MOCK } from '~/src/mocks/base/USER_API_MOCK'
 
-// * 后端路由相关函数
-// 根据后端传来数据构建出前端路由
+// * backend routes data
+// construct front-end routes from back-end data
 
 function buildRoutes(routes = []) {
   return routes.map((e) => {
@@ -24,7 +26,7 @@ function buildRoutes(routes = []) {
     }
 
     if (e.children && e.children.length > 0) {
-      // 有子菜单
+      // submenu case
       route.children = e.children.map((e_child) => ({
         name: e_child.name,
         path: e_child.path,
@@ -38,7 +40,7 @@ function buildRoutes(routes = []) {
         },
       }))
     } else {
-      // 没有子菜单，创建一个默认的子路由
+      // no submenu case, create default route
       route.children.push({
         name: `${e.name}Default`,
         path: '',
@@ -60,8 +62,8 @@ function buildRoutes(routes = []) {
 export const usePermissionStore = defineStore('permission', {
   state() {
     return {
-      accessRoutes: [],
-      accessApis: [],
+      accessRoutes: buildRoutes(USER_MENU_MOCK),
+      accessApis: USER_API_MOCK,
     }
   },
   getters: {
@@ -77,8 +79,8 @@ export const usePermissionStore = defineStore('permission', {
   },
   actions: {
     async generateRoutes() {
-      const res = await api.getUserMenu() // 调用接口获取后端传来的菜单路由
-      this.accessRoutes = buildRoutes(res.data) // 处理成前端路由格式
+      const res = await api.getUserMenu() // get backend menu data
+      this.accessRoutes = buildRoutes(res.data) // convert backend data to frontend routes
       return this.accessRoutes
     },
     async getAccessApis() {
