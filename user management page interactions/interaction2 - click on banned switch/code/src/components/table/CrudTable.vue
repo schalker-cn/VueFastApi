@@ -1,6 +1,6 @@
 <template>
   <div v-bind="$attrs">
-    <QueryBar v-if="$slots.queryBar" mb-30 @search="handleSearch" @reset="handleReset">
+    <QueryBar v-if="$slots.queryBar" mb-30>
       <slot name="queryBar" />
     </QueryBar>
 
@@ -12,8 +12,6 @@
       :scroll-x="scrollX"
       :row-key="(row) => row[rowKey]"
       :pagination="isPagination ? pagination : false"
-      @update:checked-row-keys="onChecked"
-      @update:page="onPageChange"
     />
   </div>
 </template>
@@ -121,31 +119,9 @@ function handleSearch() {
   pagination.page = 1
   handleQuery()
 }
-async function handleReset() {
-  const queryItems = { ...props.queryItems }
-  for (const key in queryItems) {
-    queryItems[key] = null
-  }
-  emit('update:queryItems', { ...queryItems, ...initQuery })
-  await nextTick()
-  pagination.page = 1
-  handleQuery()
-}
-function onPageChange(currentPage) {
-  pagination.page = currentPage
-  if (props.remote) {
-    handleQuery()
-  }
-}
-function onChecked(rowKeys) {
-  if (props.columns.some((item) => item.type === 'selection')) {
-    emit('onChecked', rowKeys)
-  }
-}
 
 defineExpose({
   handleSearch,
-  handleReset,
   tableData,
 })
 </script>

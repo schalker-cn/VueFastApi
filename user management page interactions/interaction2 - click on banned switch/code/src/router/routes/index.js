@@ -16,7 +16,6 @@ export const basicRoutes = [
     children: [
       {
         path: '',
-        component: () => import('@/views/workbench/index.vue'),
         name: `${t('views.workbench.label_workbench')}Default`,
         meta: {
           title: t('views.workbench.label_workbench'),

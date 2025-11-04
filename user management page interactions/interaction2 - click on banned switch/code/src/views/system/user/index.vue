@@ -2,30 +2,19 @@
 import { h, onMounted, ref } from 'vue'
 import {
   NButton,
-  NCheckbox,
-  NCheckboxGroup,
-  NForm,
-  NFormItem,
-  NImage,
   NInput,
-  NSpace,
   NSwitch,
   NTag,
-  NPopconfirm,
   NLayout,
   NLayoutSider,
   NLayoutContent,
-  NTreeSelect,
 } from 'naive-ui'
 
 import CommonPage from '@/components/page/CommonPage.vue'
 import QueryBarItem from '@/components/query-bar/QueryBarItem.vue'
-import CrudModal from '@/components/table/CrudModal.vue'
 import CrudTable from '@/components/table/CrudTable.vue'
 
 import { formatDate } from '@/utils'
-import { useCRUD } from '@/composables'
-// import { loginTypeMap, loginTypeOptions } from '@/constant/data'
 import api from '@/api'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import { useUserStore } from '@/store'
@@ -34,26 +23,6 @@ defineOptions({ name: 'User Management' })
 
 const $table = ref(null)
 const queryItems = ref({})
-
-const {
-  modalVisible,
-  modalTitle,
-  modalAction,
-  modalLoading,
-  handleSave,
-  modalForm,
-  modalFormRef,
-  handleEdit,
-  handleDelete,
-  handleAdd,
-} = useCRUD({
-  name: 'user',
-  initForm: {},
-  doCreate: api.createUser,
-  doUpdate: api.updateUser,
-  doDelete: api.deleteUser,
-  refresh: () => $table.value?.handleSearch(),
-})
 
 const roleOption = ref([])
 const deptOption = ref([])
@@ -161,45 +130,28 @@ const columns = [
               size: 'small',
               type: 'primary',
               style: 'margin-right: 8px;',
-              onClick: () => {
-                handleEdit(row)
-                modalForm.value.dept_id = row.dept?.id
-                modalForm.value.role_ids = row.roles.map((e) => (e = e.id))
-                delete modalForm.value.dept
-              },
             },
             {
               default: () => 'edit',
             }
           ),
-        h(
-          NPopconfirm,
-          {
-            onPositiveClick: () => handleDelete({ user_id: row.id }, false),
-            onNegativeClick: () => {},
-          },
-          {
-            trigger: () =>
-                h(
-                  NButton,
-                  {
-                    size: 'small',
-                    type: 'error',
-                    style: 'margin-right: 8px;',
-                  },
-                  {
-                    default: () => 'delete',
-                  }
-                ),
-            default: () => h('div', {}, 'are you sure to delete this user?'),
-          }
-        ),
+          h(
+            NButton,
+            {
+              size: 'small',
+              type: 'error',
+              style: 'margin-right: 8px;',
+            },
+            {
+              default: () => 'delete',
+            }
+          ),
       ]
     },
   },
 ]
 
-// 修改用户禁用状态
+// update ban status
 async function handleUpdateDisable(row) {
   if (!row.id) return
   const userStore = useUserStore()
@@ -227,82 +179,9 @@ async function handleUpdateDisable(row) {
   }
 }
 
-let lastClickedNodeId = null
-
 const nodeProps = ({ option }) => {
   return {
-    onClick() {
-      if (lastClickedNodeId === option.id) {
-        $table.value?.handleSearch()
-        lastClickedNodeId = null
-      } else {
-        api.getUserList({ dept_id: option.id }).then((res) => {
-          $table.value.tableData = res.data
-          lastClickedNodeId = option.id
-        })
-      }
-    },
   }
-}
-
-const validateAddUser = {
-  username: [
-    {
-      required: true,
-      message: 'user nmae',
-      trigger: ['input', 'blur'],
-    },
-  ],
-  email: [
-    {
-      required: true,
-      message: 'email address',
-      trigger: ['input', 'change'],
-    },
-    {
-      trigger: ['blur'],
-      validator: (rule, value, callback) => {
-        const re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-        if (!re.test(modalForm.value.email)) {
-          callback('email format is incorrect')
-          return
-        }
-        callback()
-      },
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: 'create password',
-      trigger: ['input', 'blur', 'change'],
-    },
-  ],
-  confirmPassword: [
-    {
-      required: true,
-      message: 'confirm password',
-      trigger: ['input'],
-    },
-    {
-      trigger: ['blur'],
-      validator: (rule, value, callback) => {
-        if (value !== modalForm.value.password) {
-          callback('the given password does not match')
-          return
-        }
-        callback()
-      },
-    },
-  ],
-  roles: [
-    {
-      type: 'array',
-      required: true,
-      message: 'please select at least one role',
-      trigger: ['blur', 'change'],
-    },
-  ],
 }
 </script>
 
@@ -330,11 +209,11 @@ const validateAddUser = {
     <NLayoutContent>
       <CommonPage show-footer title="User List">
         <template #action>
-          <NButton type="primary" @click="handleAdd">
+          <NButton type="primary">
             <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />Create User
           </NButton>
         </template>
-        <!-- 表格 -->
+        <!-- table -->
         <CrudTable
           ref="$table"
           v-model:query-items="queryItems"
@@ -348,7 +227,6 @@ const validateAddUser = {
                 clearable
                 type="text"
                 placeholder="type username here"
-                @keypress.enter="$table?.handleSearch()"
               />
             </QueryBarItem>
             <QueryBarItem label="email" :label-width="40">
@@ -357,91 +235,10 @@ const validateAddUser = {
                 clearable
                 type="text"
                 placeholder="type email here"
-                @keypress.enter="$table?.handleSearch()"
               />
             </QueryBarItem>
           </template>
         </CrudTable>
-
-        <CrudModal
-          v-model:visible="modalVisible"
-          :title="modalTitle"
-          :loading="modalLoading"
-          @save="handleSave"
-        >
-          <NForm
-            ref="modalFormRef"
-            label-placement="left"
-            label-align="left"
-            :label-width="80"
-            :model="modalForm"
-            :rules="validateAddUser"
-          >
-            <NFormItem label="user name" path="username">
-              <NInput v-model:value="modalForm.username" clearable placeholder="type username here" />
-            </NFormItem>
-            <NFormItem label="email" path="email">
-              <NInput v-model:value="modalForm.email" clearable placeholder="type email here" />
-            </NFormItem>
-            <NFormItem v-if="modalAction === 'add'" label="password" path="password">
-              <NInput
-                v-model:value="modalForm.password"
-                show-password-on="mousedown"
-                type="password"
-                clearable
-                placeholder="please set password"
-              />
-            </NFormItem>
-            <NFormItem v-if="modalAction === 'add'" label="confirm password" path="confirmPassword">
-              <NInput
-                v-model:value="modalForm.confirmPassword"
-                show-password-on="mousedown"
-                type="password"
-                clearable
-                placeholder="please confirm password"
-              />
-            </NFormItem>
-            <NFormItem label="role" path="role_ids">
-              <NCheckboxGroup v-model:value="modalForm.role_ids">
-                <NSpace item-style="display: flex;">
-                  <NCheckbox
-                    v-for="item in roleOption"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.name"
-                  />
-                </NSpace>
-              </NCheckboxGroup>
-            </NFormItem>
-            <NFormItem label="is superuser" path="is_superuser">
-              <NSwitch
-                v-model:value="modalForm.is_superuser"
-                size="small"
-                :checked-value="true"
-                :unchecked-value="false"
-              ></NSwitch>
-            </NFormItem>
-            <NFormItem label="banned" path="is_active">
-              <NSwitch
-                v-model:value="modalForm.is_active"
-                :checked-value="false"
-                :unchecked-value="true"
-                :default-value="true"
-              />
-            </NFormItem>
-            <NFormItem label="department" path="dept_id">
-              <NTreeSelect
-                v-model:value="modalForm.dept_id"
-                :options="deptOption"
-                key-field="id"
-                label-field="name"
-                placeholder="please select department"
-                clearable
-                default-expand-all
-              ></NTreeSelect>
-            </NFormItem>
-          </NForm>
-        </CrudModal>
       </CommonPage>
     </NLayoutContent>
   </NLayout>

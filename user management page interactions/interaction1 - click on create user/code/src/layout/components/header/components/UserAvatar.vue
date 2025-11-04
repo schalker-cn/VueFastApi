@@ -9,7 +9,6 @@
 
 <script setup>
 import { useUserStore } from '@/store'
-import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
 
