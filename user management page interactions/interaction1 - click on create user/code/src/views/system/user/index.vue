@@ -6,12 +6,10 @@ import {
   NCheckboxGroup,
   NForm,
   NFormItem,
-  NImage,
   NInput,
   NSpace,
   NSwitch,
   NTag,
-  NPopconfirm,
   NLayout,
   NLayoutSider,
   NLayoutContent,
@@ -28,7 +26,6 @@ import { useCRUD } from '@/composables'
 // import { loginTypeMap, loginTypeOptions } from '@/constant/data'
 import api from '@/api'
 import TheIcon from '@/components/icon/TheIcon.vue'
-import { useUserStore } from '@/store'
 
 defineOptions({ name: 'User Management' })
 
@@ -40,11 +37,8 @@ const {
   modalTitle,
   modalAction,
   modalLoading,
-  handleSave,
   modalForm,
   modalFormRef,
-  handleEdit,
-  handleDelete,
   handleAdd,
 } = useCRUD({
   name: 'user',
@@ -143,7 +137,6 @@ const columns = [
         loading: !!row.publishing,
         checkedValue: false,
         uncheckedValue: true,
-        onUpdateValue: () => handleUpdateDisable(row),
       })
     },
   },
@@ -161,87 +154,29 @@ const columns = [
               size: 'small',
               type: 'primary',
               style: 'margin-right: 8px;',
-              onClick: () => {
-                handleEdit(row)
-                modalForm.value.dept_id = row.dept?.id
-                modalForm.value.role_ids = row.roles.map((e) => (e = e.id))
-                delete modalForm.value.dept
-              },
             },
             {
               default: () => 'edit',
             }
           ),
-        h(
-          NPopconfirm,
-          {
-            onPositiveClick: () => handleDelete({ user_id: row.id }, false),
-            onNegativeClick: () => {},
-          },
-          {
-            trigger: () =>
-                h(
-                  NButton,
-                  {
-                    size: 'small',
-                    type: 'error',
-                    style: 'margin-right: 8px;',
-                  },
-                  {
-                    default: () => 'delete',
-                  }
-                ),
-            default: () => h('div', {}, 'are you sure to delete this user?'),
-          }
-        ),
+          h(
+            NButton,
+            {
+              size: 'small',
+              type: 'error',
+              style: 'margin-right: 8px;',
+            },
+            {
+              default: () => 'delete',
+            }
+          ),
       ]
     },
   },
 ]
 
-// 修改用户禁用状态
-async function handleUpdateDisable(row) {
-  if (!row.id) return
-  const userStore = useUserStore()
-  if (userStore.userId === row.id) {
-    $message.error('current user cannot be banned')
-    return
-  }
-  row.publishing = true
-  row.is_active = row.is_active === false ? true : false
-  row.publishing = false
-  const role_ids = []
-  row.roles.forEach((e) => {
-    role_ids.push(e.id)
-  })
-  row.role_ids = role_ids
-  row.dept_id = row.dept?.id
-  try {
-    await api.updateUser(row)
-    $message?.success(row.is_active ? 'ban discarded' : 'ban successful')
-    $table.value?.handleSearch()
-  } catch (err) {
-    row.is_active = row.is_active === false ? true : false
-  } finally {
-    row.publishing = false
-  }
-}
-
-let lastClickedNodeId = null
-
 const nodeProps = ({ option }) => {
   return {
-    onClick() {
-      if (lastClickedNodeId === option.id) {
-        $table.value?.handleSearch()
-        lastClickedNodeId = null
-      } else {
-        api.getUserList({ dept_id: option.id }).then((res) => {
-          $table.value.tableData = res.data
-          lastClickedNodeId = option.id
-        })
-      }
-    },
   }
 }
 
@@ -334,7 +269,7 @@ const validateAddUser = {
             <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />Create User
           </NButton>
         </template>
-        <!-- 表格 -->
+        <!-- table -->
         <CrudTable
           ref="$table"
           v-model:query-items="queryItems"
@@ -348,7 +283,6 @@ const validateAddUser = {
                 clearable
                 type="text"
                 placeholder="type username here"
-                @keypress.enter="$table?.handleSearch()"
               />
             </QueryBarItem>
             <QueryBarItem label="email" :label-width="40">
@@ -357,7 +291,6 @@ const validateAddUser = {
                 clearable
                 type="text"
                 placeholder="type email here"
-                @keypress.enter="$table?.handleSearch()"
               />
             </QueryBarItem>
           </template>
@@ -367,7 +300,6 @@ const validateAddUser = {
           v-model:visible="modalVisible"
           :title="modalTitle"
           :loading="modalLoading"
-          @save="handleSave"
         >
           <NForm
             ref="modalFormRef"

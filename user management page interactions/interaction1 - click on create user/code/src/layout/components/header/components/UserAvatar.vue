@@ -1,5 +1,5 @@
 <template>
-  <n-dropdown :options="options">
+  <n-dropdown>
     <div flex cursor-pointer items-center>
       <img src="https://placehold.co/1920/0606FC/0606FC?text=1" mr10 h-35 w-35 rounded-full />
       <span>{{ userStore.name }}</span>
@@ -11,18 +11,6 @@
 import { useUserStore } from '@/store'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
-
 const userStore = useUserStore()
 
-const options = [
-  {
-    label: t('header.label_profile'),
-    key: 'profile',
-  },
-  {
-    label: t('header.label_logout'),
-    key: 'logout',
-  },
-]
 </script>
