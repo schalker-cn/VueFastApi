@@ -1,0 +1,68 @@
+export const USER_MOCK = [
+  {
+    "is_superuser": true,
+    "email": "admin@admin.com",
+    "is_active": true,
+    "username": "admin",
+    "updated_at": "2025-06-28 17:10:46",
+    "id": 1,
+    "phone": null,
+    "dept_id": 1,
+    "created_at": "2025-06-27 23:12:19",
+    "last_login": "2025-06-28 17:10:46",
+    "alias": null,
+    "roles": [
+      {
+        "id": 1,
+        "desc": "admin role with all permissions",
+        "name": "admin",
+        "updated_at": "2025-06-28 18:41:58",
+        "created_at": "2025-06-27 23:12:19"
+      }
+    ]
+  },
+  {
+    "is_superuser": false,
+    "email": "test@gmail.com",
+    "is_active": false,
+    "username": "intern user",
+    "updated_at": "2025-06-29 17:51:37",
+    "id": 2,
+    "phone": null,
+    "dept_id": 2,
+    "created_at": "2025-06-29 16:59:22",
+    "last_login": null,
+    "alias": null,
+    "roles": [
+      {
+        "id": 2,
+        "desc": "level 1 user with basic permissions",
+        "name": "level 1",
+        "updated_at": "2025-06-27 23:12:19",
+        "created_at": "2025-06-27 23:12:19"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "email": "LeaderA@test.com",
+    "username": "leader A",
+    "is_active": true,
+    "is_superuser": false,
+    "dept_id": 4,
+    "roles": [
+      {
+        "id": 1,
+        "desc": "admin role with all permissions",
+        "name": "admin",
+        "updated_at": "2025-06-28 18:41:58",
+        "created_at": "2025-06-27 23:12:19"
+      }
+    ],
+    "phone": null,
+    "alias": null,
+    "last_login": null,
+    "created_at": "2025-06-29 17:44:46",
+    "updated_at": "2025-06-29 17:51:36"
+  }
+]

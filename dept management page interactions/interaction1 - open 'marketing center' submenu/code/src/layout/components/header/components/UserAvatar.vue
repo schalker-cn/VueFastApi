@@ -1,0 +1,38 @@
+<template>
+  <n-dropdown :options="options" @select="handleSelect">
+    <div flex cursor-pointer items-center>
+      <img src="https://placehold.co/1920/0606FC/0606FC?text=1" mr10 h-35 w-35 rounded-full />
+      <span>{{ userStore.name }}</span>
+    </div>
+  </n-dropdown>
+</template>
+
+<script setup>
+import { useUserStore } from '@/store'
+import { renderIcon } from '@/utils'
+import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const router = useRouter()
+
+const userStore = useUserStore()
+
+const options = [
+  {
+    label: t('header.label_profile'),
+    key: 'profile',
+  },
+  {
+    label: t('header.label_logout'),
+    key: 'logout',
+  },
+]
+
+function handleSelect(key) {
+  if (key === 'profile') {
+    router.push('/profile')
+  }
+}
+</script>
