@@ -1,0 +1,16 @@
+export const ROLE_MOCK = [
+  {
+    "id": 1,
+    "desc": "admin role with all permissions",
+    "name": "admin",
+    "updated_at": "2025-06-28 18:41:58",
+    "created_at": "2025-06-27 23:12:19"
+  },
+  {
+    "id": 2,
+    "desc": "level 1 user with basic permissions",
+    "name": "level 1",
+    "updated_at": "2025-06-27 23:12:19",
+    "created_at": "2025-06-27 23:12:19"
+  }
+]
